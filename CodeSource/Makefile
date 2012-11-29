@@ -3,7 +3,6 @@
 #Promo : 3APP P2015
 
 
-
 #SRC = $(wildcard *.c) :  Il s'en sert pour récupérer tous les fichiers finissant par .c du répétoire dans lequel se situe le Makefile.
 #OBJS = $(SRC:.c=.o) : permet de préciser les nom de chaque fichier .o à partir du fichier .c.
 #> Le nom de la cible est « @ »
