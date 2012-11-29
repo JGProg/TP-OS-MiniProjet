@@ -7,6 +7,68 @@ Création d'un segment de mémoire partagée
 ###Description
 - - - - - - - - 
 
+`shmget()` renvoie l'identificateur du segment de mémoire partagée associé à la valeur de l'argument clé. Un nouveau segment mémoire, de taille size arrondie au multiple supérieur de `PAGE_SIZE`, est créé si clé a la valeur `IPC_PRIVATE` ou si aucun segment de mémoire partagée n'est associé à clé, et `IPC_CREAT` est présent dans `shmflg`.
+`shmflg` est composé de :
+
+- `IPC_CREAT` : pour créer un nouveau segment. Sinon shmget() recherchera le segment associé à clé, vérifiera que l'appelant a la permission de recevoir l'identifiant shmid associé au segment, et contrôlera que le segment n'est pas détruit.
+- `IPC_EXCL` : est utilisé avec `IPC_CREAT` pour garantir l'échec si le segment existe déjà.
+mode d'accès (les 9 bits de poids faibles) indiquant les permissions pour le propriétaire, le groupe et les autres. Actuellement la permission d'exécution n'est pas utilisée par le système.
+
+Si un nouveau segment est créé, les permissions d'accès de `shmflg` sont copiées dans le membre `shm_perm` de la structure `shmid_ds` décrivant le segment. Cette structure est définie ainsi :
+	struct shmid_ds {
+  		struct          ipc_perm shm_perm; /* Permissions d'accès       */
+  		int             shm_segsz;         /* Taille segment en octets  */
+  		time_t          shm_atime;         /* Heure dernier attachement */
+  		time_t          shm_dtime;         /* Heure dernier détachement */
+  		time_t          shm_ctime;         /* Heure dernier changement  */
+	  	unsigned short  shm_cpid;          /* PID du créateur           */
+		unsigned short  shm_lpid;          /* PID du dernier opérateur  */
+  		short           shm_nattch;        /* Nombre d'attachements     */
+  		/* ------------- Les champs suivants sont prives -------------- */
+  		unsigned short  shm_npages;        /* Taille segment en pages   */
+  		unsigned long   *shm_pages;        /* Taille d'une page (?)     */
+  		struct shm_desc *attaches;         /* Descript. attachements    */
+	};
+
+
+	struct ipc_perm
+	{
+  		key_t  key;
+  		ushort uid;   /* UID et GID effectifs du propriétaire    */
+  		ushort gid;
+  		ushort cuid;  /* UID et GID effectif du créateur         */
+  		ushort cgid;
+  		ushort mode;  /* Mode d'accès sur 9 bits de poids faible */
+  		ushort seq;   /* Numéro de séquence                      */
+	};
+	
+	
+
+###Valeur de retour
+- - - - - - - - 
+
+Réussite
+
+Un identificateur de segment shmid valide est renvoyé en cas de réussite, sinon -1 est renvoyé et errno contient le code d'erreur.
+
+Erreur
+
+- `EINVAL` `SHMMIN` > size ou size > `SHMMAX`, ou size plus grand que la taille du segment.
+- `EEXIST` On a indiqué `IPC_CREAT | IPC_EXCL` et le segment existe déjà.
+- `EIDRM` Le segment est détruit.
+- `ENOSPC` Tous les ID de mémoire partagée sont utilisés, ou l'allocation d'un segment partagé de taille size dépasserait les limites de mémoire partagée du système.
+- `ENOENT` Aucun segment n'est associé à clé, et IPC_CREAT n'etait pas indiqué.
+- `EACCES` L'appelant n'a pas les autorisations d'accès au segment.
+- `ENOMEM` Pas assez de mémoire.
+
+
+
+Attachement d'un segment de mémoire partagée
+-----------------------------------------
+
+###Description
+- - - - - - - - 
+
 `shmget`: création du segment de mémoire partagée.
 `shmat`: attachement du segment de mémoire partagée // Donne autorisation 
 
