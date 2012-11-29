@@ -1,8 +1,8 @@
 Allocation mémoire avec un malloc
 =================================
 
-Création d'un segment de mémoire partagée
------------------------------------------
+Création d'un segment de mémoire partagée (`shmget`)
+--------------------------------------------------
 
 
 ###Synopsis
@@ -81,8 +81,16 @@ Erreur
 
 
 
-Attachement d'un segment de mémoire partagée
------------------------------------------
+Attachement d'un segment de mémoire partagée (`shmat`)
+----------------------------------------------------
+
+###Synopsis
+- - - - - - - - 
+	#include <sys/types.h>
+	#include <sys/ipc.h>
+	#include <sys/shm.h>
+	
+	char *shmat ( int shmid, char *shmaddr, int shmflg )
 
 ###Description
 - - - - - - - - 
@@ -115,8 +123,17 @@ Erreur
 - `ENOMEM` : Pas assez de mémoire pour le système.
 	
 
-Destruction d'un segment de mémoire partagée
---------------------------------------------
+Détachement d'un segment de mémoire partagée (`shmdt`)
+---------------------------------------------------
+
+###Synopsis
+- - - - - - 
+
+	# include <sys/types.h>
+	# include <sys/ipc.h>
+	# include <sys/shm.h>
+
+	int shmdt ( char *shmaddr)
 
 ###Description
 - - - - - - - - 
@@ -139,3 +156,84 @@ La région occupée de l'espace d'adressage du processus est libérée.
 		
 Erreur	
 - `EINVAL.` : Pas de segment attaché à l'adresse `shmaddr`.
+
+
+
+
+Destruction d'un segment de mémoire partagée (`shmctl`)
+---------------------------------------------------
+
+###Synopsis
+- - - - - - 
+
+	#include <sys/ipc.h>
+	#include <sys/shm.h>
+	
+	int shmctl(int shmid, int cmd, struct shmid_ds *buf);
+	
+	
+###Description
+- - - - - - - - 
+
+`shmctl()` permet à l'utilisateur d'obtenir des informations concernant un segment de mémoire partagée, ainsi que de fixer le propriétaire le groupe et les permissions d'accès à ce segment. Cette fonction permet également de détruire un segment.
+Les informations concernant le segment identifié par shmid sont renvoyées dans une structure `shmid_ds` :
+
+
+	struct shmid_ds 
+	{
+  		struct          ipc_perm shm_perm; /* Permissions d'accès       */
+  		int             shm_segsz;         /* Taille segment en octets  */
+  		time_t          shm_atime;         /* Heure dernier attachement */
+  		time_t          shm_dtime;         /* Heure dernier détachement */
+  		time_t          shm_ctime;         /* Heure dernier changement  */
+  		unsigned short  shm_cpid;          /* PID du créateur           */
+  		unsigned short  shm_lpid;          /* PID du dernier opérateur  */
+  		short           shm_nattch;        /* Nombre d'attachements     */
+  		/* ------------- Les champs suivants sont privés -------------- */
+  		unsigned short  shm_npages;        /* Taille segment en pages   */
+  		unsigned long   *shm_pages;        /* Taille d'une page (?)     */
+  		struct shm_desc *attaches;         /* Descript. attachements    */
+	};
+
+Le champ `shm_perm` a la forme suivante :
+
+	struct ipc_perm
+	{
+  		key_t  key;
+ 	 	ushort uid;   /* UID et GID effectifs du propriétaire    */
+  		ushort gid;
+ 		ushort cuid;  /* UID et GID effectif du créateur         */
+  		ushort cgid;
+  		ushort mode;  /* Mode d'accès sur 9 bits de poids faible */
+  		ushort seq;   /* numéro de séquence                      */
+	};
+
+Les commandes cmd suivantes sont disponibles : 
+`IPC_STAT` : permet de récupérer dans le buffer `buf` les informations concernant le segment de mémoire partagée. L'apellant doit avoir la permission d'accès en lecture sur le segment.
+`IPC_SET` : sert à appliquer les changements que l'utilisateur a apportés dans les champs uid, gid,ou mode de la structure `shm_perms`. Seuls les 9 bits de poids faibles sont utilisés dans mode. Le membre `shm_ctime` est aussi mis à jour. L'appelant doit être le créateur du segment, son propriétaire, ou le Super-User.
+`IPC_RMID` : permet de considérer un segment comme prêt pour la destruction. Il sera détruit effectivement après le dernier détachement (quand le membre `shm_nattch` de la structure `shmid_ds` associée vaudra zéro.) L'appelant doit être le créateur du segment, son propriétaire, ou le Super-User.
+Attention, même après le dernier détachement, le contenu du segment n'est pas effacé par le système. Un processus réalisant à nouveau un attachement recupèrera son contenu. Il est à la charge du processus l'utilisateur d'écraser le contenu du segment s'il ne veut pas qu'il persiste.
+
+De plus le Super-User peut autoriser ou interdire le swapping d'un segment avec les commandes suivantes (spécifique Linux) : 
+`SHM_LOCK` : empêche le swapping d'un segment de mémoire partagée. L'appelant doit consulter chaque page concernée après avoir effectué le verrouillage pour s'assurer qu'elle est bien présente en mémoire.
+`SHM_UNLOCK` : réautorise le swapping d'un segment.
+
+Les appels systèmes `IPC_INFO`, `IPC_STAT` et `IPC_RMID` sont utilisés par le programme `ipcs(8)` afin d'obtenir des informations sur les ressources allouées.
+
+
+###Valeur de retour
+- - - - - - - - - -
+
+Réussite 
+________
+
+`shmctl` renvoie 0 s'il réussit et -1 s'il échoue, auquel cas errno contient le code d'erreur.
+
+Erreur
+______
+
+`EACCES` : on demande `IPC_STAT` mais `shm_perm.modes` ne permet pas la lecture du segment shmid.
+`EFAULT` : cmd à la valeur `IPC_SET` ou `IPC_STAT` mais buf pointe en-dehors de l'espace d'adressage accessible.
+`EINVAL` : `shmid` n'est pas un identificateur de segment valide, ou cmd n'est pas une commande reconnue.
+`EIDRM` : `shmid` pointe sur un segment détruit.
+`EPERM` : On réclame `IPC_SET` ou `IPC_RMID` mais l'appelant n'est ni le propriétaire du segment, ni son créateur, ni le Super-User.
