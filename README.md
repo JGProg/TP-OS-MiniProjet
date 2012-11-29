@@ -55,21 +55,33 @@ Programme acquisition.c/h
     
     Les données générées sont décrites par cette formule :
     
-                                  valeur = µsecode*10e6 + seconde
+              valeur = µsecode*10e6 + seconde
                                   
   SPECIFICATION :
-
-                 La fonction
-
-
-
+  
+    - Les résutats des relevés de l'heure seront stockés dans un tableau passé en paramètre par le main.c
+    - La fonction prend en paramètre :
+        -> n : le nombre de séries d'acuqisition qui seront réalisés
+        -> delai : le temps en seconde entre 2 série d'acquisition de données
+        -> nbAcquisition : Le nombre d'acquisition faites pour une série
+        -> delaiAcqusition : le temps en seconde entre 2 acquisitions d'une même série
+        -> Mesure[] : Un tableau qui stockera la valeur des résultats générés par la fonction.
 
 
 Programme stockage.c/h
 ======================
 
+  DESCRIPTION :
 
-
+      Cette fonction prends les données passées en paramètre par la variable Mesure[] de type tableau. La fonction 
+      copie ensuite les valeurs du tableau dans un fichier et supprime les valeurs du tableau copié dans le fichier.
+      
+    
+    
+  SPECIFICATION :
+  
+    - La fonction stockera les résultats des tests dans un tableau- La fonction acquistion.c devra générée un fichier data_1_X.txt avec X correspondant au nombre de série.
+    - Dans le fichier data_1_X.txt on aura strictement une valeur par ligne
 
 
 
