@@ -31,11 +31,7 @@ Programme main.c
         -> delai : le temps en seconde entre 2 série d'acquisition de données
         -> nbAcquisition : Le nombre d'acquisition faites pour une série
         -> delaiAcqusition : le temps en seconde entre 2 acquisitions d'une même série
-        -> Mesure[] : Ce tableau est un segment de mémoire partagé alloué avec la fonction malloc
-    
-  ALGORITHME :
-  
-  
+        -> Mesure[] : Ce tableau est un segment de mémoire partagé alloué avec la fonction malloc  
 
 
 Programme acquisition.c/h
