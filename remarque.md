@@ -1,8 +1,8 @@
 Allocation mémoire avec un malloc
 =================================
 
-	Création d'un segment de mémoire partagée
-	=========================================
+Création d'un segment de mémoire partagée
+-----------------------------------------
 
 	shmget : création du segment de mémoire partagée
 	shmat : attachement du segment de mémoire partagée // Donne autorisation 
@@ -15,7 +15,7 @@ La fonction shmat attache le segment de mémoire partagée identifié par shmid 
 	
 	
 Valeur de retour
-================
+----------------
 	Reussite
 	========
 	Si shmat réussit, les membres de la structure shmid_ds associée au segment de mémoire partagée sont mis à jour ainsi :
@@ -32,7 +32,7 @@ Valeur de retour
 	
 
 Destruction d'un segment de mémoire partagée
-============================================
+--------------------------------------------
 
 	La fonction shmdt détache le segment de mémoire partagée situe à l'adresse indiquée par shmaddr. Le segment doit être effectivement attaché, et l'adresse shmaddr doit être celle renvoyée précédement par shmat.
 	
