@@ -15,7 +15,7 @@ La fonction `shmat` attache le segment de mémoire partagée identifié par shmi
 	
 	
 Valeur de retour
-----------------
+- - - - - - - - 
 Reussite
 	
 Si `shmat` réussit, les membres de la structure shmid_ds associée au segment de mémoire partagée sont mis à jour ainsi :
