@@ -15,7 +15,9 @@ Création d'un segment de mémoire partagée
 mode d'accès (les 9 bits de poids faibles) indiquant les permissions pour le propriétaire, le groupe et les autres. Actuellement la permission d'exécution n'est pas utilisée par le système.
 
 Si un nouveau segment est créé, les permissions d'accès de `shmflg` sont copiées dans le membre `shm_perm` de la structure `shmid_ds` décrivant le segment. Cette structure est définie ainsi :
-	struct shmid_ds {
+
+	struct shmid_ds 
+	{
   		struct          ipc_perm shm_perm; /* Permissions d'accès       */
   		int             shm_segsz;         /* Taille segment en octets  */
   		time_t          shm_atime;         /* Heure dernier attachement */
@@ -29,8 +31,8 @@ Si un nouveau segment est créé, les permissions d'accès de `shmflg` sont copi
   		unsigned long   *shm_pages;        /* Taille d'une page (?)     */
   		struct shm_desc *attaches;         /* Descript. attachements    */
 	};
-
-
+	
+	
 	struct ipc_perm
 	{
   		key_t  key;
