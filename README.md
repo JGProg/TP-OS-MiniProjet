@@ -11,7 +11,7 @@ L'architecture logiciel va être composé de :
 - Un Makefile
 
 
-=================================================================================================================================================
+
                  Programme main.c
 =================================================================================================================================================
 
@@ -53,10 +53,13 @@ L'architecture logiciel va être composé de :
       int tv_usec; // Microsecondes
     };
     
-    Pour g
+    Les données générées sont décrites par cette formule :
     
+                                  valeur = µsecode*10e6 + seconde
+                                  
   SPECIFICATION :
 
+                 La fonction
 
 
 
