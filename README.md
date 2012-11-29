@@ -1,4 +1,6 @@
 TP-OS-MiniProjet
 ================
 
-Tâche 
+L'architecture logiciel va être composé de :
+
+- Un programme main.c
