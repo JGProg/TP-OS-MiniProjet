@@ -14,7 +14,7 @@ La fonction `shmat` attache le segment de mémoire partagée identifié par shmi
  - Si `SHM_RDONLY` est indiqué dans `shmflg`, le segment est attaché en lecture seulement, et le processus doit disposer de la permission de lecture dessus. Sinon le segment est attaché en lecture et écriture et le processus doit disposer des deux permissions d'accès. Il n'y a pas de notion d'écriture seule pour les segments de mémoire partagée.
 	
 	
-Valeur de retour
+###Valeur de retour
 - - - - - - - - 
 Reussite
 	
