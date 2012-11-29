@@ -1,20 +1,17 @@
 Allocation mémoire avec un malloc
 =================================
 
-Création d'un segment de mémoire partagée
-=========================================
+	Création d'un segment de mémoire partagée
+	=========================================
 
 	shmget : création du segment de mémoire partagée
 	shmat : attachement du segment de mémoire partagée // Donne autorisation 
 
 La fonction shmat attache le segment de mémoire partagée identifié par shmid au segment de données du processus appelant. L'adresse d'attachement est indiquée par shmaddr avec les critères suivants :
 
- - Si
-	shmaddr vaut 0, le système essaye de trouver une zone libre dans l'intervalle 1 - 1.5Go en commençant par l'adresse la plus haute et en descendant jusqu'à trouver l'emplacement adéquat.
- - Si
-	shmaddr n'est pas nulle et si SHM_RND est indiqué dans shmflg, l'attachement a lieu à l'adresse shmaddr arrondie au multiple inférieur de SHMLBA. Si SHM_RND n'est pas indiqué shmaddr doit être alignée sur une frontière de page, et l'attachement a lieu à cette adresse.
- - Si 
-	SHM_RDONLY est indiqué dans shmflg, le segment est attaché en lecture seulement, et le processus doit disposer de la permission de lecture dessus. Sinon le segment est attaché en lecture et écriture et le processus doit disposer des deux permissions d'accès. Il n'y a pas de notion d'écriture seule pour les segments de mémoire partagée.
+ - Si shmaddr vaut 0, le système essaye de trouver une zone libre dans l'intervalle 1 - 1.5Go en commençant par l'adresse la plus haute et en descendant jusqu'à trouver l'emplacement adéquat.
+ - Si shmaddr n'est pas nulle et si SHM_RND est indiqué dans shmflg, l'attachement a lieu à l'adresse shmaddr arrondie au multiple inférieur de SHMLBA. Si SHM_RND n'est pas indiqué shmaddr doit être alignée sur une frontière de page, et l'attachement a lieu à cette adresse.
+ - Si SHM_RDONLY est indiqué dans shmflg, le segment est attaché en lecture seulement, et le processus doit disposer de la permission de lecture dessus. Sinon le segment est attaché en lecture et écriture et le processus doit disposer des deux permissions d'accès. Il n'y a pas de notion d'écriture seule pour les segments de mémoire partagée.
 	
 	
 Valeur de retour
