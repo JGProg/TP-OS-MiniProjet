@@ -213,7 +213,10 @@ Les commandes cmd suivantes sont disponibles :
 - `IPC_STAT` : permet de récupérer dans le buffer `buf` les informations concernant le segment de mémoire partagée. L'apellant doit avoir la permission d'accès en lecture sur le segment.
 - `IPC_SET` : sert à appliquer les changements que l'utilisateur a apportés dans les champs uid, gid,ou mode de la structure `shm_perms`. Seuls les 9 bits de poids faibles sont utilisés dans mode. Le membre `shm_ctime` est aussi mis à jour. L'appelant doit être le créateur du segment, son propriétaire, ou le Super-User.
 - `IPC_RMID` : permet de considérer un segment comme prêt pour la destruction. Il sera détruit effectivement après le dernier détachement (quand le membre `shm_nattch` de la structure `shmid_ds` associée vaudra zéro.) L'appelant doit être le créateur du segment, son propriétaire, ou le Super-User.
+
+
 Attention, même après le dernier détachement, le contenu du segment n'est pas effacé par le système. Un processus réalisant à nouveau un attachement recupèrera son contenu. Il est à la charge du processus l'utilisateur d'écraser le contenu du segment s'il ne veut pas qu'il persiste.
+
 
 De plus le Super-User peut autoriser ou interdire le swapping d'un segment avec les commandes suivantes (spécifique Linux) : 
 - `SHM_LOCK` : empêche le swapping d'un segment de mémoire partagée. L'appelant doit consulter chaque page concernée après avoir effectué le verrouillage pour s'assurer qu'elle est bien présente en mémoire.
