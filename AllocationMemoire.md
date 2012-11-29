@@ -4,6 +4,9 @@ Allocation mémoire avec un malloc
 Création d'un segment de mémoire partagée
 -----------------------------------------
 
+###Description
+- - - - - - - - 
+
 `shmget`: création du segment de mémoire partagée.
 `shmat`: attachement du segment de mémoire partagée // Donne autorisation 
 
@@ -34,6 +37,9 @@ Erreur
 
 Destruction d'un segment de mémoire partagée
 --------------------------------------------
+
+###Description
+- - - - - - - - 
 
 La fonction `shmdt` détache le segment de mémoire partagée situe à l'adresse indiquée par `shmaddr`. Le segment doit être effectivement attaché, et l'adresse shmaddr doit être celle renvoyée précédement par shmat.
 
