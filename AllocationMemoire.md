@@ -4,6 +4,15 @@ Allocation mémoire avec un malloc
 Création d'un segment de mémoire partagée
 -----------------------------------------
 
+
+###Synopsis
+- - - - - - - - 
+
+	#include <sys/ipc.h>
+	#include <sys/shm.h>
+	int shmget(key_t clé, int size, int shmflg);
+
+
 ###Description
 - - - - - - - - 
 
@@ -44,7 +53,14 @@ Si un nouveau segment est créé, les permissions d'accès de `shmflg` sont copi
   		ushort seq;   /* Numéro de séquence                      */
 	};
 	
-	
+De plus, durant la création, le système initialise la structure shmid_ds associée au segment comme suit :
+
+`shm_perm.cuid` et `shm_perm.uid` contiennent l'`UID` effectif de l'appelant.
+`shm_perm.cgid` et `shm_perm.gid` contiennent le `GID` effectif de l'appelant. Les 9 bits de poids faibles de `shm_perm.mode` contiennent les 9 bits de poids faibles de `shmflg`.
+`shm_segsz` prend la valeur size.
+`shm_lpid`, `shm_nattch`, `shm_atime` et `shm_dtime` sont mis à 0.
+`shm_ctime` contient l'heure actuelle
+
 
 ###Valeur de retour
 - - - - - - - - 
