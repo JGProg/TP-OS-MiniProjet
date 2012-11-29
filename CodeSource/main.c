@@ -26,7 +26,7 @@
 
 int main(int argc, char *argv[])
 {
-    
+    int i =2;
 	/* Déclaration des variables */
 	pid_t pid_acquisition=0, pid_stockage=0, pid_traitement=0;
 	
@@ -61,8 +61,7 @@ int main(int argc, char *argv[])
 	}
 	
 	/*********************************** Fin code processus acquisition ***********************************/
-	
-	
+
 	
 	
 	
