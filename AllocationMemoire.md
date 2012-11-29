@@ -4,7 +4,7 @@ Allocation mémoire avec un malloc
 Création d'un segment de mémoire partagée
 -----------------------------------------
 
-`shmget`: création du segment de mémoire partagée
+`shmget`: création du segment de mémoire partagée.
 `shmat` : attachement du segment de mémoire partagée // Donne autorisation 
 
 La fonction `shmat` attache le segment de mémoire partagée identifié par shmid au segment de données du processus appelant. L'adresse d'attachement est indiquée par shmaddr avec les critères suivants :
