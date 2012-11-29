@@ -119,7 +119,6 @@ Programme courbe.c/h
 
     A definir
     
-    
 Fin
 ===
 
