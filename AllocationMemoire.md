@@ -229,12 +229,12 @@ Les appels systèmes `IPC_INFO`, `IPC_STAT` et `IPC_RMID` sont utilisés par le 
 - - - - - - - - - -
 
 Réussite 
-________
+
 
 `shmctl` renvoie 0 s'il réussit et -1 s'il échoue, auquel cas errno contient le code d'erreur.
 
 Erreur
-______
+
 
 `EACCES` : on demande `IPC_STAT` mais `shm_perm.modes` ne permet pas la lecture du segment shmid.
 `EFAULT` : cmd à la valeur `IPC_SET` ou `IPC_STAT` mais buf pointe en-dehors de l'espace d'adressage accessible.
