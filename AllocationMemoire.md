@@ -16,7 +16,8 @@ La fonction `shmat` attache le segment de mémoire partagée identifié par shmi
 	
 ###Valeur de retour
 - - - - - - - - 
-Reussite
+
+Réussite
 	
 Si `shmat` réussit, les membres de la structure shmid_ds associée au segment de mémoire partagée sont mis à jour ainsi :
 
@@ -35,9 +36,12 @@ Destruction d'un segment de mémoire partagée
 --------------------------------------------
 
 La fonction `shmdt` détache le segment de mémoire partagée situe à l'adresse indiquée par `shmaddr`. Le segment doit être effectivement attaché, et l'adresse shmaddr doit être celle renvoyée précédement par shmat.
-	
-Reussite
 
+
+###Valeur de retour
+- - - - - - - - 
+
+Réussite
 	
 Quand shmdt réussit, les membres de la structure shmid_ds associée au segment de mémoire partagée sont mis à jour ainsi :
 - `shm_dtime` : correspond à l'heure actuelle.
