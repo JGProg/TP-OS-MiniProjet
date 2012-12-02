@@ -6,3 +6,7 @@
 CodeSource/TP-OS
 
 CodeSource/TP-OS
+
+*.o
+
+CodeSource/prog
