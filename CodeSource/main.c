@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	pid_t pid_acquisition=0, pid_stockage=0, pid_traitement=0;
 	
 	/* Initialisation du programme et création des processus acquisition, stockage et traitement */
-	//system("clear");
+	system("clear");
 	printf("\n\n================================ TP 2 ET 3 : SEMAPHORE ET MEMOIRE PARTAGEE ================================\n\n");
 	
 	
