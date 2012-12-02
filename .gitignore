@@ -6,3 +6,7 @@
 *.o
 
 CodeSource/prog
+
+CodeSource/.DS_Store
+
+.DS_Store
