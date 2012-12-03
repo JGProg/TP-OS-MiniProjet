@@ -1,12 +1,23 @@
-
 *.md~
-
 *.c~
+CodeSource/prog
+CodeSource/.DS_Store
+.DS_Store
 
+# Object files
 *.o
 
-CodeSource/prog
+# Libraries
+*.lib
+*.a
 
-CodeSource/.DS_Store
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
 
-.DS_Store
+# Executables
+*.exe
+*.out
+*.app
