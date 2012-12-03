@@ -8,13 +8,13 @@
 
 /* Begin PBXFileReference section */
 		7309A58F166B80DB00E9119B /* Make.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Make.xcodeproj; path = Make/Make.xcodeproj; sourceTree = "<group>"; };
-		7309A5AC166BA00900E9119B /* acquisition.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = acquisition.c; path = ../acquisition.c; sourceTree = "<group>"; };
-		7309A5AD166BA00900E9119B /* acquisition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = acquisition.h; path = ../acquisition.h; sourceTree = "<group>"; };
-		7309A5AE166BA00900E9119B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../main.c; sourceTree = "<group>"; };
-		7309A5AF166BA00900E9119B /* stockage.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = stockage.c; path = ../stockage.c; sourceTree = "<group>"; };
-		7309A5B0166BA00900E9119B /* stockage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stockage.h; path = ../stockage.h; sourceTree = "<group>"; };
-		7309A5B1166BA00900E9119B /* traitement.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = traitement.c; path = ../traitement.c; sourceTree = "<group>"; };
-		7309A5B2166BA00900E9119B /* traitement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = traitement.h; path = ../traitement.h; sourceTree = "<group>"; };
+		7309A5AC166BA00900E9119B /* acquisition.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = acquisition.c; path = ../../acquisition.c; sourceTree = "<group>"; };
+		7309A5AD166BA00900E9119B /* acquisition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = acquisition.h; path = ../../acquisition.h; sourceTree = "<group>"; };
+		7309A5AE166BA00900E9119B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../../main.c; sourceTree = "<group>"; };
+		7309A5AF166BA00900E9119B /* stockage.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = stockage.c; path = ../../stockage.c; sourceTree = "<group>"; };
+		7309A5B0166BA00900E9119B /* stockage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stockage.h; path = ../../stockage.h; sourceTree = "<group>"; };
+		7309A5B1166BA00900E9119B /* traitement.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = traitement.c; path = ../../traitement.c; sourceTree = "<group>"; };
+		7309A5B2166BA00900E9119B /* traitement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = traitement.h; path = ../../traitement.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
