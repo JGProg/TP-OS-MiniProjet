@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
             /* Code du la fonction acquisition.c */
 		case 0:
 			printf("\n\n\t\t\t Partie acquisition \n\n");
-			// acquisition();
+			/* acquisition(); */
 			exit(1);
             break;
             
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
             /* Code de la fonction stockage */
 		case 0:
 			printf("\n\n\t\t\t Partie stockage \n\n");
-			// stockage();
+			/* stockage(); */
 			exit(1);
             break;
             
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
             /* Code du la fonction stockage.c */
 		case 0:
 			printf("\n\n\t\t\t Partie traitement \n\n");
-			// traitement();
+			/* traitement();*/
 			exit(1);
             break;
             
