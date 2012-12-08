@@ -7,12 +7,46 @@
 		<key>Make.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>2</integer>
+		</dict>
+		<key>build.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>doc.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<true/>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>7309A589166B80DB00E9119B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>730C8E7D16729D0E00FD1952</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>730C8E9E16729D0F00FD1952</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>730C8EB516729DF500FD1952</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>73E0F4941672606800F792AC</key>
 		<dict>
 			<key>primary</key>
 			<true/>

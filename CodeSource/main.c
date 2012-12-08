@@ -14,6 +14,15 @@
 |												|
 ************************************************************************************************/
 
+/**
+ * \file acquisition.h
+ * \brief Header of acquisition.c.
+ * \author jessy giacomoni and Adrien Rogier
+ * \version 0.1
+ * \date 01/12/12
+ * Copyright (c) 2012 jessy giacomoni  and Adrien Rogier. All rights reserved.
+ */
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,19 +30,25 @@
 #include <sys/types.h>
 #include <sys/shm.h>
 #include <sys/ipc.h>
+#include "acquisition.h"
+#include <signal.h>
 
 
-
+#define nbrSerie            3
+#define delaiEntreSerie     2
+#define nbrAcquisition      5
+#define delaiAcquisition    3
 
 int main(int argc, char *argv[])
 {
+    
 	/* Déclaration des variables */
 	pid_t pid_acquisition=0, pid_stockage=0, pid_traitement=0;
 	
 	/* Initialisation du programme et création des processus acquisition, stockage et traitement */
 	system("clear");
 	printf("\n\n================================ TP 2 ET 3 : SEMAPHORE ET MEMOIRE PARTAGEE ================================\n\n");
-	
+
 	
 	
 	/*********************************** Création du processus acquisition ***********************************/
@@ -51,7 +66,9 @@ int main(int argc, char *argv[])
             /* Code du la fonction acquisition.c */
 		case 0:
 			printf("\n\n\t\t\t Partie acquisition \n\n");
-			/* acquisition(); */
+            int tabResultat[(int)nbrSerie][(int)nbrAcquisition];
+            acquisition(nbrSerie,delaiEntreSerie,nbrAcquisition, delaiAcquisition, &(tabResultat[0][0]));
+            
 			exit(1);
             break;
             
@@ -122,8 +139,7 @@ int main(int argc, char *argv[])
 	
 	/*********************************** Code du pere ***********************************/
 	printf("\n\n\t\t\t Code du pere \n\n");
-	
-	/******************************** Fin de code du pere *******************************/
+  	/******************************** Fin de code du pere *******************************/
 	
 	
 	

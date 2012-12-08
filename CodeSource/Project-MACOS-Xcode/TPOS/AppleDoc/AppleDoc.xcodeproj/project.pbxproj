@@ -6,22 +6,8 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		730C8EB516729DF500FD1952 /* doc */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 730C8EB616729DF500FD1952 /* Build configuration list for PBXAggregateTarget "doc" */;
-			buildPhases = (
-				730C8EB916729DFA00FD1952 /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = doc;
-			productName = doc;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXGroup section */
-		7309A582166B80DB00E9119B = {
+		73E0F48716725EF100F792AC = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -30,65 +16,46 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		7309A589166B80DB00E9119B /* Make */ = {
+		73E0F48E16725EF100F792AC /* AppleDoc */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "$(ACTION)";
-			buildConfigurationList = 7309A58C166B80DB00E9119B /* Build configuration list for PBXLegacyTarget "Make" */;
+			buildConfigurationList = 73E0F49116725EF100F792AC /* Build configuration list for PBXLegacyTarget "AppleDoc" */;
 			buildPhases = (
 			);
-			buildToolPath = make;
-			buildWorkingDirectory = "/Users/jessygiacomoni/Documents/GITHUB/TP-OS-MiniProjet/CodeSource";
+			buildToolPath = /Users/jessygiacomoni/Documents/GITHUB/make;
 			dependencies = (
 			);
-			name = Make;
+			name = AppleDoc;
 			passBuildSettingsInEnvironment = 1;
-			productName = Make;
+			productName = AppleDoc;
 		};
 /* End PBXLegacyTarget section */
 
 /* Begin PBXProject section */
-		7309A584166B80DB00E9119B /* Project object */ = {
+		73E0F48916725EF100F792AC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "jessy giacomoni";
 			};
-			buildConfigurationList = 7309A587166B80DB00E9119B /* Build configuration list for PBXProject "Make" */;
+			buildConfigurationList = 73E0F48C16725EF100F792AC /* Build configuration list for PBXProject "AppleDoc" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 7309A582166B80DB00E9119B;
-			productRefGroup = 7309A582166B80DB00E9119B;
+			mainGroup = 73E0F48716725EF100F792AC;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7309A589166B80DB00E9119B /* Make */,
-				730C8EB516729DF500FD1952 /* doc */,
+				73E0F48E16725EF100F792AC /* AppleDoc */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		730C8EB916729DFA00FD1952 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/Applications/Doxygen.app/Contents/Resources/doxygen /Users/jessygiacomoni/Documents/GITHUB/TP-OS-MiniProjet/CodeSource/Doxyfile";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin XCBuildConfiguration section */
-		7309A58A166B80DB00E9119B /* Debug */ = {
+		73E0F48F16725EF100F792AC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -97,8 +64,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				DOXYGEN_PATH = "/Applications/Doxygen.app/Contents/Resources/doxygen ";
+				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -118,7 +84,7 @@
 			};
 			name = Debug;
 		};
-		7309A58B166B80DB00E9119B /* Release */ = {
+		73E0F49016725EF100F792AC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -129,7 +95,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DOXYGEN_PATH = "/Applications/Doxygen.app/Contents/Resources/doxygen ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -141,10 +106,9 @@
 			};
 			name = Release;
 		};
-		7309A58D166B80DB00E9119B /* Debug */ = {
+		73E0F49216725EF100F792AC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				DEBUGGING_SYMBOLS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -154,26 +118,11 @@
 			};
 			name = Debug;
 		};
-		7309A58E166B80DB00E9119B /* Release */ = {
+		73E0F49316725EF100F792AC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		730C8EB716729DF500FD1952 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		730C8EB816729DF500FD1952 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -181,34 +130,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7309A587166B80DB00E9119B /* Build configuration list for PBXProject "Make" */ = {
+		73E0F48C16725EF100F792AC /* Build configuration list for PBXProject "AppleDoc" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7309A58A166B80DB00E9119B /* Debug */,
-				7309A58B166B80DB00E9119B /* Release */,
+				73E0F48F16725EF100F792AC /* Debug */,
+				73E0F49016725EF100F792AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7309A58C166B80DB00E9119B /* Build configuration list for PBXLegacyTarget "Make" */ = {
+		73E0F49116725EF100F792AC /* Build configuration list for PBXLegacyTarget "AppleDoc" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7309A58D166B80DB00E9119B /* Debug */,
-				7309A58E166B80DB00E9119B /* Release */,
+				73E0F49216725EF100F792AC /* Debug */,
+				73E0F49316725EF100F792AC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		730C8EB616729DF500FD1952 /* Build configuration list for PBXAggregateTarget "doc" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				730C8EB716729DF500FD1952 /* Debug */,
-				730C8EB816729DF500FD1952 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 7309A584166B80DB00E9119B /* Project object */;
+	rootObject = 73E0F48916725EF100F792AC /* Project object */;
 }

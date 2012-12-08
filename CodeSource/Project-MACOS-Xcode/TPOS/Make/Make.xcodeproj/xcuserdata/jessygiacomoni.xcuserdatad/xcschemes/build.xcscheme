@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7309A589166B80DB00E9119B"
-               BuildableName = "Make"
-               BlueprintName = "Make"
+               BlueprintIdentifier = "73E0F4941672606800F792AC"
+               BuildableName = "build"
+               BlueprintName = "build"
                ReferencedContainer = "container:Make.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -31,17 +31,14 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <PathRunnable
-         FilePath = "/Users/jessygiacomoni/Documents/GITHUB/TP-OS-MiniProjet/CodeSource/prog">
-      </PathRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
