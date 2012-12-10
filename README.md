@@ -1,5 +1,49 @@
 TP-OS-MiniProjet
 ================
+A SUPPRIMER
+===============
+    J'écris ici parce que je ne peux pas créer de nouveau fichier -_- enfin je n'y arrive pas. Je n'ai pas compris
+    pourquoi tu as changé le nom des variables ? Dans le TP la prof a indiqué le nom des variables, je ne crois pas
+    qu'elle appréciera. Ou j'ai peut-être mal compris.
+    De plus je comprends vraiment pas ton code. Je te propose ce code ci-dessous qui pour moi est plus simple :
+    
+    
+    #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/shm.h>
+#include <sys/ipc.h>
+#include <signal.h>
+#include <sys/time.h>
+
+void acquisition()
+{        
+
+        /* Déclaration d'un pointeur sur une structure de type timezone */
+        struct timezone * tz;
+        tz = (struct timezone *) malloc (sizeof(struct timezone));
+        if(tz == NULL)
+        {
+                perror("Problème allocation mémoire");
+                exit(1);
+        }
+        
+        /* Déclaration d'un pointeur sur une structure de type timezone */
+        struct timeval * tv;
+        tv = (struct timeval *) malloc (sizeof(struct timeval));
+        if(tv == NULL)
+        {
+                perror("Problème allocation mémoire");
+                exit(1);
+        }
+        
+        /* Initialisation des structures */
+        gettimeofday(tv,tz);
+        
+        /* Affichage des résultats */
+        printf("\n\n Seconde : [%d] \n\n µseconde : [%d] \n\n",tv->tv_sec,tv->tv_usec);
+}
 
 L'architecture logiciel va être composé de :
 
