@@ -102,6 +102,9 @@ int main(int argc, char *argv[])
     pid_stockage=0;
     pid_traitement=0;
     
+    /* Le clé pour la mémoire partagée */
+    key = 1234;
+    
     /* CREATION du sémpahore */
     
     /*
@@ -118,9 +121,6 @@ int main(int argc, char *argv[])
     sem_V[0].sem_num = 0;
     sem_V[0].sem_op  = 1;
     sem_V[0].sem_flg = 0;
-    
-    /* Pour la création du sémaphore */
-    key = 1234;
     
     /* Creation du sémaphore */
     semaphore = semget(key ,1,IPC_CREAT | 0666);
