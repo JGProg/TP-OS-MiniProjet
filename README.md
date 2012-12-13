@@ -72,7 +72,7 @@ Programme stockage.c/h
 
   DESCRIPTION :
 
-      Cette fonction prends les données passées en paramètre par la variable Mesure[] de type tableau. Elle 
+      Cette fonction prends les données passées en paramètre par la variable Mesure[ ] de type tableau. Elle 
       copie ensuite les valeurs du tableau dans un fichier et supprime les valeurs du tableau copié dans le fichier.
     
   SPECIFICATION :
@@ -80,6 +80,15 @@ Programme stockage.c/h
     - La fonction acquistion.c devra générée un fichier data_1_X.txt avec X correspondant au nombre de série.
     - Dans le fichier data_1_X.txt on aura strictement une valeur par ligne.
     - La fonction supprimera les valeurs du tableau que celle-ci à copier dans le fichier data_1_X.txt
+
+Transition Acqusition/Stockage
+==============================
+
+Nous allons tout d'abord récupérer une série d'acquisition. Lorsque celui-ci est fait alors nous allons stocker. 
+Durant, le délai entre les séries nous allons donc en profiter pour donner la main au stockage. Lors de la terminaison de celui-ci nous allons redonner la main à l'acquisition pour la prochaine série.
+
+- Remarque: Cependant, un problème peut persister. En effet, si le temps de stockage est supérieur au délai entre les séries alors le délai de sera donc pas respecté.
+
 
 
 Programme traitement.c/h
