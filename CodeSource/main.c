@@ -23,40 +23,111 @@
  * Copyright (c) 2012 jessy giacomoni  and Adrien Rogier. All rights reserved.
  */
 
-
+/* include global */
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/shm.h>
 #include <sys/ipc.h>
-#include "acquisition.h"
 #include <signal.h>
 #include <sys/wait.h> 
+#include <sys/sem.h>
 
+/* include source code */
+#include "acquisition.h"
 
 /**
  * \todo Le père doit attendre que ses fils soit terminer avant qu'il se termine.
  */
 int main(int argc, char *argv[])
 {
-    /* Déclaration des variables */
     
+    /* DECLARATIONS  */
+    unsigned int NombreDeFilsTermine;
+    unsigned int NbrFils = 3;
+    
+    /* Ceux passer en paramètres */
     unsigned int nbrSerie;
     unsigned int delaiEntreSerie;
     unsigned int nbrAcquisition;
     unsigned int delaiAcquisition;
     
-	
-	pid_t pid_acquisition=0, pid_stockage=0, pid_traitement=0;
+    /* Il fera la taille du nombre d'acquisition. */
     int * tabResultat;
-    int status;
-	/* Initialisation du programme et création des processus acquisition, stockage et traitement */
+    
+    /* Pour le nombre de fois que l'on doit appeler la fonction acquisition */
+    unsigned int incrementAcquisition;
+    
+    /* Semaphore */
+    int semaphore;
+    struct sembuf *sem_P = (struct sembuf *) malloc(2*sizeof(struct sembuf));
+    struct sembuf *sem_V = (struct sembuf *) malloc(2*sizeof(struct sembuf));
+    int Valretour;
+    union semun {
+        int val;
+        struct semid_ds *buf;
+        ushort * array;
+    } argument;
+    key_t key;
+    
+    
+    /* Creation des pid pour les forks */
+    pid_t pid_acquisition;
+    pid_t pid_stockage;
+    pid_t pid_traitement;
+
+    
+    /* INITIALISATIONS */
+    
+    /* Initialisation de la taille du nombre d'acquisition */
+    tabResultat = (int *) malloc(nbrAcquisition * sizeof(int));
+    
+    /* Pour le nombre de fois que l'on doit appeler la fonction acquisition */
+    incrementAcquisition = 0;
+    
+    /* Des pid pour les forks */
+    pid_acquisition=0;
+    pid_stockage=0;
+    pid_traitement=0;
+    
+    /* CREATION du sémpahore */
+    
+    /*
+     struct sembuf {
+        ushort_t        sem_num;        semaphore number
+        short           sem_op;          semaphore operation
+        short           sem_flg;         operation flags
+     };
+    */
+    sem_P[0].sem_num =  0;
+    sem_P[0].sem_op  = -1;
+    sem_P[0].sem_flg =  0;
+    
+    sem_V[0].sem_num = 0;
+    sem_V[0].sem_op  = 1;
+    sem_V[0].sem_flg = 0;
+    
+    /* Pour la création du sémaphore */
+    key = 1234;
+    
+    /* Creation du sémaphore */
+    semaphore = semget(key ,1,IPC_CREAT | 0666);
+    if(semaphore < 0)
+    {
+        perror("Probleme de creation de sémaphore\n");
+        exit(-2);
+    }
+    
+    /* Changement d'état du sémaphore */
+    argument.val = 1;
+    semctl(semaphore,0,SETVAL,argument);
+    
 	
     system("clear");
-    
 	printf("\n\n================================ TP 2 ET 3 : SEMAPHORE ET MEMOIRE PARTAGEE ================================\n\n");
 
+    /* On test les paramètres */
     if(argc != 5)
     {
         printf("%d",argc);
@@ -76,13 +147,12 @@ int main(int argc, char *argv[])
         delaiAcquisition=  atoi(argv[4]);
     }
 	
-	
 	/*********************************** Création du processus acquisition ***********************************/
 	
 	pid_acquisition = fork();
-	
 	switch(pid_acquisition)
 	{
+            
         /* Gestion des erreurs du fork */
 		case -1:
 			perror(" Erreur fork \n");
@@ -91,19 +161,34 @@ int main(int argc, char *argv[])
             
         /* Code du la fonction acquisition.c */
 		case 0:
-			printf("\n\n\t\t\t Partie acquisition \n\n");
-            /* Il fera la taille du nombre d'acquisition. */
-
-            tabResultat = (int *) malloc(nbrAcquisition * sizeof(int));
-            acquisition(nbrSerie,delaiEntreSerie,nbrAcquisition, delaiAcquisition, tabResultat);
+			while(incrementAcquisition < nbrSerie)
+            {
+                
+                Valretour = semop(semaphore,sem_P,1);
+                if(Valretour < 0)
+                {
+                    perror("Erreur prendre semaphore\n");
+                    exit(-3);
+                }
+                
+                acquisition(nbrSerie,delaiEntreSerie,nbrAcquisition,delaiAcquisition,tabResultat);
+                
+                Valretour = semop(semaphore,sem_V,1);
+                if(Valretour < 0)
+                {
+                    perror("Erreur rendre semaphore\n");
+                    exit(-4);
+                }
+                incrementAcquisition++;
+            }
 			exit(1);
             break;
             
         /* Code du pere */
 		default:
             break;
-	}
-	
+        
+	} 
 	/*********************************** Fin code processus acquisition ***********************************/
 
 	
@@ -122,18 +207,29 @@ int main(int argc, char *argv[])
             
             /* Code de la fonction stockage */
 		case 0:
-			printf("\n\n\t\t\t Partie stockage \n\n");
-			/* stockage(); */
-			exit(1);
+            Valretour = semop(semaphore,sem_P,1);
+            if(Valretour < 0)
+            {
+                perror("Erreur prendre semaphore\n");
+                exit(-3);
+            }
+            printf("Deuxième sémaphore\n");
+            Valretour = semop(semaphore,sem_V,1);
+            if(Valretour < 0)
+            {
+                perror("Erreur rendre semaphore\n");
+                exit(-4);
+            }
+            exit(1);
             break;
             
             /* Code du pere */
 		default:
             break;
+             
 	}
 	/*********************************** Fin du processus stockage ***********************************/
-	
-	
+
 	
 	
 	/*********************************** Création du processus traitement ***********************************/
@@ -160,13 +256,11 @@ int main(int argc, char *argv[])
 	}
 	/*********************************** Fin du processus traitement ***********************************/
 	
-	
-
-    wait (&status) ;
-    if (WIFEXITED (status))
-        printf ("fils termine normalement: status = %d\n", WEXITSTATUS (status)) ;
+    
+    for(NombreDeFilsTermine=0;NombreDeFilsTermine<NbrFils;wait(NULL),NombreDeFilsTermine++);
+    
 	/*********************************** Code du pere ***********************************/
-	printf("\n\n\t\t\t Code du pere \n\n");
+	printf("\n\n\t\t\t Fin du code du pere \n\n");
   	/******************************** Fin de code du pere *******************************/
 	
 	
