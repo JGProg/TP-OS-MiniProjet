@@ -8,7 +8,8 @@
 */
 void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, unsigned int nbrAcquisitionSerie, unsigned int delaiEntreDeuxAcquisition,int* tabResultat)
 {
-    printf("%d \n",nbAcquisition);
+    printf("%d \n",tabResultat[0]);
+    tabResultat[0] = 4;
     /*unsigned int incrementAcquisition = 0;
     
     for(incrementAcquisition=0; incrementAcquisition< nbAcquisition;incrementAcquisition++)

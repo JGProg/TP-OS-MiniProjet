@@ -1,18 +1,18 @@
 /***********************************************************************************************|
-|	Entreprise 	|	ESISAR								|
-|	Matière 	|	CS336								|
-|	Sujet		|	TP2 ET 3							|
-|	Auteur 		|	GIACOMONI Jessy et ROGIER Adrien				|
-|	Statut 		|	3 Apprenti							|
-|	Date		|	29/11/2012							|
-|	Version		|	1.0								|
-|---------------------------------------------------------------------------------------------- |
-|  DESCRIPTION :										|
-|	Ceci est notre brique général. Elle est testé et opérationnel.				|
-| 	Il faut complété le code manquant dans chacun des switchs, ainsi			|
-| 	qu'à la fin pour le code du père.							|
-|												|
-************************************************************************************************/
+ |	Entreprise 	|	ESISAR								|
+ |	Matière 	|	CS336								|
+ |	Sujet		|	TP2 ET 3							|
+ |	Auteur 		|	GIACOMONI Jessy et ROGIER Adrien				|
+ |	Statut 		|	3 Apprenti							|
+ |	Date		|	29/11/2012							|
+ |	Version		|	1.0								|
+ |---------------------------------------------------------------------------------------------- |
+ |  DESCRIPTION :										|
+ |	Ceci est notre brique général. Elle est testé et opérationnel.				|
+ | 	Il faut complété le code manquant dans chacun des switchs, ainsi			|
+ | 	qu'à la fin pour le code du père.							|
+ |												|
+ ************************************************************************************************/
 
 /**
  * \file acquisition.h
@@ -31,11 +31,15 @@
 #include <sys/shm.h>
 #include <sys/ipc.h>
 #include <signal.h>
-#include <sys/wait.h> 
+#include <sys/wait.h>
 #include <sys/sem.h>
 
 /* include source code */
 #include "acquisition.h"
+
+/* Pour la mémoire partagée */
+#define CLEF 42
+
 
 /**
  * \todo Le père doit attendre que ses fils soit terminer avant qu'il se termine.
@@ -76,12 +80,19 @@ int main(int argc, char *argv[])
     pid_t pid_acquisition;
     pid_t pid_stockage;
     pid_t pid_traitement;
-
+    
+    /* identificateur du segment de mémoire partagée associé à CLEF */
+    int mem_ID;
+    /* pointeur sur l'adresse d'attachement du segment de mémoire partagée */
+	int* ptr_mem_partagee;
+    
     
     /* INITIALISATIONS */
     
     /* Initialisation de la taille du nombre d'acquisition */
     tabResultat = (int *) malloc(nbrAcquisition * sizeof(int));
+    /* Test memoire partagée */
+    tabResultat[0] =5;
     
     /* Pour le nombre de fois que l'on doit appeler la fonction acquisition */
     incrementAcquisition = 0;
@@ -95,11 +106,11 @@ int main(int argc, char *argv[])
     
     /*
      struct sembuf {
-        ushort_t        sem_num;        semaphore number
-        short           sem_op;          semaphore operation
-        short           sem_flg;         operation flags
+     ushort_t        sem_num;        semaphore number
+     short           sem_op;          semaphore operation
+     short           sem_flg;         operation flags
      };
-    */
+     */
     sem_P[0].sem_num =  0;
     sem_P[0].sem_op  = -1;
     sem_P[0].sem_flg =  0;
@@ -126,7 +137,7 @@ int main(int argc, char *argv[])
 	
     system("clear");
 	printf("\n\n================================ TP 2 ET 3 : SEMAPHORE ET MEMOIRE PARTAGEE ================================\n\n");
-
+    
     /* On test les paramètres */
     if(argc != 5)
     {
@@ -146,20 +157,22 @@ int main(int argc, char *argv[])
         nbrAcquisition  =  atoi(argv[3]);
         delaiAcquisition=  atoi(argv[4]);
     }
+    
+
 	
 	/*********************************** Création du processus acquisition ***********************************/
-	
+    
 	pid_acquisition = fork();
 	switch(pid_acquisition)
 	{
             
-        /* Gestion des erreurs du fork */
+            /* Gestion des erreurs du fork */
 		case -1:
 			perror(" Erreur fork \n");
 			return EXIT_FAILURE;
             break;
             
-        /* Code du la fonction acquisition.c */
+            /* Code du la fonction acquisition.c */
 		case 0:
 			while(incrementAcquisition < nbrSerie)
             {
@@ -170,8 +183,26 @@ int main(int argc, char *argv[])
                     perror("Erreur prendre semaphore\n");
                     exit(-3);
                 }
+                /* Nouveau segment mémoire de taille "nbAquisition" octets, avec des droits d'écriture et de lecture 
+                   et on s'assure que l'espace mémoire a été correctement créé
+                 */
+                if ((mem_ID = shmget(CLEF, sizeof(tabResultat), 0666 | IPC_CREAT)) < 0)
+                {
+                    perror("shmget");
+                    exit(-5);
+                }
+                /* On attache le segment de mémoire partagée identifié par mem_ID au segment de données du processus 'Acquisition' dans une zone libre déterminée par le Système d'exploitation
+                 et on s'assure que le segment de mémoire a été correctement attaché à mon processus
+                 */
+                if ((ptr_mem_partagee = shmat(mem_ID, NULL, 0)) == (void*) -1)
+                {
+                    perror("shmat");
+                    exit(1);
+                }
+                acquisition(nbrSerie,delaiEntreSerie,nbrAcquisition,delaiAcquisition,ptr_mem_partagee);
                 
-                acquisition(nbrSerie,delaiEntreSerie,nbrAcquisition,delaiAcquisition,tabResultat);
+                /* On libère la mémoire partagée */
+                shmdt(ptr_mem_partagee);
                 
                 Valretour = semop(semaphore,sem_V,1);
                 if(Valretour < 0)
@@ -184,13 +215,13 @@ int main(int argc, char *argv[])
 			exit(1);
             break;
             
-        /* Code du pere */
+            /* Code du pere */
 		default:
             break;
-        
-	} 
+            
+	}
 	/*********************************** Fin code processus acquisition ***********************************/
-
+    
 	
 	
 	
@@ -214,6 +245,28 @@ int main(int argc, char *argv[])
                 exit(-3);
             }
             printf("Deuxième sémaphore\n");
+            
+            /* On cherche lesegment mémoire associé à CLEF et je récupère l'identificateur de ce segment mémoire. On attribue des droits de lecture uniquement
+             et on s''assure que l'espace mémoire a été correctement créé
+             */
+            if ((mem_ID = shmget(CLEF, sizeof(tabResultat), 0444)) < 0)
+            {
+                perror("shmget");
+                exit(1);
+            }
+            
+            /* On attache le segment de mémoire partagée identifié par mem_ID au segment de données du processus 'Acquisition' dans une zone libre déterminée par le Système d'exploitation
+             et je m'assure que le segment de mémoire a été correctement attaché à mon processus
+             */
+            if ((ptr_mem_partagee = shmat(mem_ID, NULL, 0)) == (void*) -1)	{
+                perror("shmat");
+                exit(1);
+            }
+            tabResultat[0] = (ptr_mem_partagee)[0];
+            printf("%d\n",tabResultat[0]);
+            /* On libère la mémoire partagée */
+            shmdt(ptr_mem_partagee);
+            
             Valretour = semop(semaphore,sem_V,1);
             if(Valretour < 0)
             {
@@ -224,14 +277,14 @@ int main(int argc, char *argv[])
             break;
             
             /* Code du pere */
-		default:
+        default:
             break;
-             
-	}
-	/*********************************** Fin du processus stockage ***********************************/
-
-	
-	
+            
+    }
+    /*********************************** Fin du processus stockage ***********************************/
+    
+    
+    
 	/*********************************** Création du processus traitement ***********************************/
  	pid_traitement = fork();
  	
@@ -258,7 +311,6 @@ int main(int argc, char *argv[])
 	
     
     for(NombreDeFilsTermine=0;NombreDeFilsTermine<NbrFils;wait(NULL),NombreDeFilsTermine++);
-    
 	/*********************************** Code du pere ***********************************/
 	printf("\n\n\t\t\t Fin du code du pere \n\n");
   	/******************************** Fin de code du pere *******************************/
