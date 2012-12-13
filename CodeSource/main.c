@@ -89,10 +89,11 @@ int main(int argc, char *argv[])
     
     /* INITIALISATIONS */
     
+    
     /* Initialisation de la taille du nombre d'acquisition */
     tabResultat = (int *) malloc(nbrAcquisition * sizeof(int));
     /* Test memoire partagée */
-    tabResultat[0] =5;
+    tabResultat[0] = 5;
     
     /* Pour le nombre de fois que l'on doit appeler la fonction acquisition */
     incrementAcquisition = 0;
@@ -101,9 +102,28 @@ int main(int argc, char *argv[])
     pid_acquisition=0;
     pid_stockage=0;
     pid_traitement=0;
+
     
-    /* Le clé pour la mémoire partagée */
-    key = 1234;
+    /* Nouveau segment mémoire de taille "nbAquisition" octets, avec des droits d'écriture et de lecture
+     et on s'assure que l'espace mémoire a été correctement créé
+     */
+    mem_ID = shmget(CLEF, sizeof(tabResultat), 0666 | IPC_CREAT);
+    if (mem_ID < 0)
+    {
+        perror("shmget");
+        exit(-5);
+    }
+    
+    /* On cherche lesegment mémoire associé à CLEF et je récupère l'identificateur de ce segment mémoire. On attribue des droits de lecture uniquement
+     et on s''assure que l'espace mémoire a été correctement créé
+     
+     mem_ID = shmget(CLEF, sizeof(tabResultat), 0444);
+     if (mem_ID < 0)
+     {
+     perror("shmget");
+     exit(1);
+     }
+     */
     
     /* CREATION du sémpahore */
     
@@ -122,6 +142,8 @@ int main(int argc, char *argv[])
     sem_V[0].sem_op  = 1;
     sem_V[0].sem_flg = 0;
     
+
+    key = 1234;
     /* Creation du sémaphore */
     semaphore = semget(key ,1,IPC_CREAT | 0666);
     if(semaphore < 0)
@@ -129,6 +151,9 @@ int main(int argc, char *argv[])
         perror("Probleme de creation de sémaphore\n");
         exit(-2);
     }
+    
+    
+   
     
     /* Changement d'état du sémaphore */
     argument.val = 1;
@@ -158,9 +183,7 @@ int main(int argc, char *argv[])
         delaiAcquisition=  atoi(argv[4]);
     }
     
-
-	
-	/*********************************** Création du processus acquisition ***********************************/
+   	/*********************************** Création du processus acquisition ***********************************/
     
 	pid_acquisition = fork();
 	switch(pid_acquisition)
@@ -176,21 +199,13 @@ int main(int argc, char *argv[])
 		case 0:
 			while(incrementAcquisition < nbrSerie)
             {
-                
                 Valretour = semop(semaphore,sem_P,1);
                 if(Valretour < 0)
                 {
                     perror("Erreur prendre semaphore\n");
                     exit(-3);
                 }
-                /* Nouveau segment mémoire de taille "nbAquisition" octets, avec des droits d'écriture et de lecture 
-                   et on s'assure que l'espace mémoire a été correctement créé
-                 */
-                if ((mem_ID = shmget(CLEF, sizeof(tabResultat), 0666 | IPC_CREAT)) < 0)
-                {
-                    perror("shmget");
-                    exit(-5);
-                }
+                
                 /* On attache le segment de mémoire partagée identifié par mem_ID au segment de données du processus 'Acquisition' dans une zone libre déterminée par le Système d'exploitation
                  et on s'assure que le segment de mémoire a été correctement attaché à mon processus
                  */
@@ -199,6 +214,8 @@ int main(int argc, char *argv[])
                     perror("shmat");
                     exit(1);
                 }
+                printf("Ici %d \n", tabResultat[0]);
+                
                 acquisition(nbrSerie,delaiEntreSerie,nbrAcquisition,delaiAcquisition,ptr_mem_partagee);
                 
                 /* On libère la mémoire partagée */
@@ -244,16 +261,8 @@ int main(int argc, char *argv[])
                 perror("Erreur prendre semaphore\n");
                 exit(-3);
             }
-            printf("Deuxième sémaphore\n");
             
-            /* On cherche lesegment mémoire associé à CLEF et je récupère l'identificateur de ce segment mémoire. On attribue des droits de lecture uniquement
-             et on s''assure que l'espace mémoire a été correctement créé
-             */
-            if ((mem_ID = shmget(CLEF, sizeof(tabResultat), 0444)) < 0)
-            {
-                perror("shmget");
-                exit(1);
-            }
+            
             
             /* On attache le segment de mémoire partagée identifié par mem_ID au segment de données du processus 'Acquisition' dans une zone libre déterminée par le Système d'exploitation
              et je m'assure que le segment de mémoire a été correctement attaché à mon processus
@@ -262,8 +271,8 @@ int main(int argc, char *argv[])
                 perror("shmat");
                 exit(1);
             }
-            tabResultat[0] = (ptr_mem_partagee)[0];
-            printf("%d\n",tabResultat[0]);
+            tabResultat[0] = ptr_mem_partagee[0];
+            printf("Deuxième sémaphore %d\n",tabResultat[0]);
             /* On libère la mémoire partagée */
             shmdt(ptr_mem_partagee);
             
@@ -315,8 +324,11 @@ int main(int argc, char *argv[])
 	printf("\n\n\t\t\t Fin du code du pere \n\n");
   	/******************************** Fin de code du pere *******************************/
 	
-	
-	
+	int rtrn = shmctl(mem_ID, IPC_RMID, 0);
+	if(rtrn == -1)
+             {
+                 perror("Error\n");exit(-6);
+         }
 	return 0;
 }
 
