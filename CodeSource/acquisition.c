@@ -8,19 +8,14 @@
 */
 void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, unsigned int nbrAcquisitionSerie, unsigned int delaiEntreDeuxAcquisition,int* tabResultat)
 {
-    unsigned int i = 0;
-    unsigned int j = 0;
-    for(j=0;j<nbrAcquisitionSerie;j++)
+    unsigned int incrementAcquisition = 0;
+    
+    for(incrementAcquisition=0; incrementAcquisition< nbAcquisition;incrementAcquisition++)
     {
-        for(i=0; i< nbAcquisition;i++)
-        {
-            tabResultat[j +i + nbAcquisition] = recupereHeure();
-            printf("Valeur du tableau inséré %d\n",tabResultat[j + i + nbAcquisition]);
-            sleep(delaiEntreDeuxAcquisition);
-        }
-        sleep(delaiEntreLesSeries);
+        tabResultat[incrementAcquisition nbAcquisition] = recupereHeure();
+        printf("Valeur du tableau inséré %d\n",tabResultat[incrementAcquisition]);
+        sleep(delaiEntreDeuxAcquisition);
     }
-    printf("Helloe\n");
 }
 
 
@@ -29,30 +24,28 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
  */
 int recupereHeure(void)
 {
-    struct timezone * tv;
-    tv = (struct timezone *) malloc (sizeof(struct timezone));
+    /* Déclaration d'un pointeur sur une structure de type timezone */
+    struct timezone * tz;
+    tz = (struct timezone *) malloc (sizeof(struct timezone));
+    if(tz == NULL)
+    {
+        perror("Problème allocation mémoire");
+        exit(1);
+    }
+    /* Déclaration d'un pointeur sur une structure de type timezone */
+    struct timeval * tv;
+    tv = (struct timeval *) malloc (sizeof(struct timeval));
     if(tv == NULL)
     {
         perror("Problème allocation mémoire");
         exit(1);
     }
-    return tv->tz_minuteswest;
-}
-
-
-/**
- * \brief see Header
- */
-void afficher(int* Matrice, size_t M, size_t N)
-{
-    size_t j, i;
-    printf("Affichage de la matrice est : \n");
-    for(j = 0; j < N; j++)
-    {
-        for(i = 0; i < M; i++)
-        {
-            printf("%3d\t",Matrice[M * j + i] );
-        }
-        printf("\n");
-    }
+    
+    /* Initialisation des structures */
+    gettimeofday(tv,tz);
+    
+    /* Affichage des résultats */
+    printf("\n\n Seconde : [%d] \n\n µseconde : [%d] \n\n",tv->tv_sec,tv->tv_usec);
+    
+    return tv->tv_sec;
 }

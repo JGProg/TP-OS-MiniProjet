@@ -32,23 +32,49 @@
 #include <sys/ipc.h>
 #include "acquisition.h"
 #include <signal.h>
+#include <sys/wait.h> 
 
 
-#define nbrSerie            3
-#define delaiEntreSerie     2
-#define nbrAcquisition      5
-#define delaiAcquisition    3
-
+/**
+ * \todo Le père doit attendre que ses fils soit terminer avant qu'il se termine.
+ */
 int main(int argc, char *argv[])
 {
+    /* Déclaration des variables */
     
-	/* Déclaration des variables */
-	pid_t pid_acquisition=0, pid_stockage=0, pid_traitement=0;
+    unsigned int nbrSerie;
+    unsigned int delaiEntreSerie;
+    unsigned int nbrAcquisition;
+    unsigned int delaiAcquisition;
+    
 	
+	pid_t pid_acquisition=0, pid_stockage=0, pid_traitement=0;
+    int * tabResultat;
+    int status;
 	/* Initialisation du programme et création des processus acquisition, stockage et traitement */
-	system("clear");
+	
+    system("clear");
+    
 	printf("\n\n================================ TP 2 ET 3 : SEMAPHORE ET MEMOIRE PARTAGEE ================================\n\n");
 
+    if(argc != 5)
+    {
+        printf("%d",argc);
+        printf("Le nombre de paramètre n'est pas correct\n");
+        printf("\t-> n : le nombre de séries d'acuqisition qui seront réalisés\n");
+        printf("\t-> delai : le temps en seconde entre 2 série d'acquisition de données\n");
+        printf("\t-> nbAcquisition : Le nombre d'acquisition faites pour une série\n");
+        printf("\t-> delaiAcqusition : le temps en seconde entre 2 acquisitions d'une même série\n");
+        exit(-1);
+        
+    }
+    else
+    {
+        nbrSerie        =  atoi(argv[1]);
+        delaiEntreSerie =  atoi(argv[2]);
+        nbrAcquisition  =  atoi(argv[3]);
+        delaiAcquisition=  atoi(argv[4]);
+    }
 	
 	
 	/*********************************** Création du processus acquisition ***********************************/
@@ -57,22 +83,23 @@ int main(int argc, char *argv[])
 	
 	switch(pid_acquisition)
 	{
-            /* Gestion des erreurs du fork */
+        /* Gestion des erreurs du fork */
 		case -1:
 			perror(" Erreur fork \n");
 			return EXIT_FAILURE;
             break;
             
-            /* Code du la fonction acquisition.c */
+        /* Code du la fonction acquisition.c */
 		case 0:
 			printf("\n\n\t\t\t Partie acquisition \n\n");
-            int tabResultat[(int)nbrSerie][(int)nbrAcquisition];
-            acquisition(nbrSerie,delaiEntreSerie,nbrAcquisition, delaiAcquisition, &(tabResultat[0][0]));
-            
+            /* Il fera la taille du nombre d'acquisition. */
+
+            tabResultat = (int *) malloc(nbrAcquisition * sizeof(int));
+            acquisition(nbrSerie,delaiEntreSerie,nbrAcquisition, delaiAcquisition, tabResultat);
 			exit(1);
             break;
             
-            /* Code du pere */
+        /* Code du pere */
 		default:
             break;
 	}
@@ -134,9 +161,10 @@ int main(int argc, char *argv[])
 	/*********************************** Fin du processus traitement ***********************************/
 	
 	
-	
-	
-	
+
+    wait (&status) ;
+    if (WIFEXITED (status))
+        printf ("fils termine normalement: status = %d\n", WEXITSTATUS (status)) ;
 	/*********************************** Code du pere ***********************************/
 	printf("\n\n\t\t\t Code du pere \n\n");
   	/******************************** Fin de code du pere *******************************/
