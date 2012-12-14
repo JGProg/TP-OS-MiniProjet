@@ -228,6 +228,7 @@ int main(int argc, char *argv[])
                     exit(-4);
                 }
                 incrementAcquisition++;
+                sleep(3);
             }
 			exit(1);
             break;
@@ -261,7 +262,12 @@ int main(int argc, char *argv[])
                 perror("Erreur prendre semaphore\n");
                 exit(-3);
             }
-            
+            mem_ID = shmget(CLEF, sizeof(tabResultat), 0444);
+            if (mem_ID < 0)
+            {
+                perror("shmget");
+                exit(1);
+            }
             
             
             /* On attache le segment de mémoire partagée identifié par mem_ID au segment de données du processus 'Acquisition' dans une zone libre déterminée par le Système d'exploitation
@@ -271,8 +277,7 @@ int main(int argc, char *argv[])
                 perror("shmat");
                 exit(1);
             }
-            tabResultat[0] = ptr_mem_partagee[0];
-            printf("Deuxième sémaphore %d\n",tabResultat[0]);
+            printf("Deuxième sémaphore %d\n",ptr_mem_partagee[0]);
             /* On libère la mémoire partagée */
             shmdt(ptr_mem_partagee);
             
