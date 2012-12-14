@@ -8,7 +8,7 @@
 */
 void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, unsigned int nbrAcquisitionSerie, unsigned int delaiEntreDeuxAcquisition,int* tabResultat)
 {
-    printf("%d \n",tabResultat[0]);
+    printf("ACQUISITION : Avant le placement de Valeur 4 on a : %d \n",tabResultat[0]);
     tabResultat[0] = 4;
     /*unsigned int incrementAcquisition = 0;
     
@@ -18,6 +18,8 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
         printf("Valeur du tableau inséré %d\n",tabResultat[incrementAcquisition]);
         sleep(delaiEntreDeuxAcquisition);
     }*/
+    
+    
 }
 
 
