@@ -3,6 +3,7 @@
 CodeSource/prog
 CodeSource/.DS_Store
 .DS_Store
+CodeSource/doc/*
 
 # Object files
 *.o
