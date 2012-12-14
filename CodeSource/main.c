@@ -64,7 +64,8 @@ int main(int argc, char *argv[])
     unsigned int incrementAcquisition;
     
     /* Semaphore */
-    int semaphore;
+    int semaphore_Proc_Acquisition_Stockage;
+    int semaphore_Proc_Stockage_Traitement;
     struct sembuf *sem_P = (struct sembuf *) malloc(2*sizeof(struct sembuf));
     struct sembuf *sem_V = (struct sembuf *) malloc(2*sizeof(struct sembuf));
     
@@ -151,20 +152,28 @@ int main(int argc, char *argv[])
     sem_V[0].sem_flg = 0;
     
     
-    key = 1234;
+    key = 666;
+    key = 42;
     /* Creation du sémaphore */
-    semaphore = semget(key ,1,IPC_CREAT | 0666);
-    if(semaphore < 0)
+    semaphore_Proc_Acquisition_Stockage = semget(key ,1,IPC_CREAT | 0666);
+    if(semaphore_Proc_Acquisition_Stockage < 0)
     {
         perror("Probleme de creation de sémaphore\n");
         exit(-2);
     }
 
+    semaphore_Proc_Stockage_Traitement = semget(key ,1,IPC_CREAT | 0666);
+    if(semaphore_Proc_Stockage_Traitement < 0)
+    {
+        perror("Probleme de creation de sémaphore\n");
+        exit(-2);
+    }
     
     /* Changement d'état du sémaphore */
     argument.val = 1;
-    semctl(semaphore,0,SETVAL,argument);
-    
+    semctl(semaphore_Proc_Acquisition_Stockage,0,SETVAL,argument);
+    argument.val = 2;
+    semctl(semaphore_Proc_Stockage_Traitement,0,SETVAL,argument);
 	
     system("clear");
 	printf("\n\n================================ TP 2 ET 3 : SEMAPHORE ET MEMOIRE PARTAGEE ================================\n\n");
@@ -205,14 +214,14 @@ int main(int argc, char *argv[])
 		case 0:
 			while(incrementAcquisition < nbrSerie)
             {
-                Valretour = semop(semaphore,sem_P,1);
+                Valretour = semop(semaphore_Proc_Acquisition_Stockage,sem_P,1);
                 if(Valretour < 0)
                 {
                     perror("Erreur prendre semaphore\n");
                     exit(-3);
                 }
                 printf("PREMIER SEMAPHORE \n");
-                
+                printf("ACQUISITION\n");
                 /* On attache le segment de mémoire partagée identifié par mem_ID au segment de données du processus 'Acquisition' dans une zone libre déterminée par le Système d'exploitation
                  et on s'assure que le segment de mémoire a été correctement attaché à mon processus
                  */
@@ -224,8 +233,8 @@ int main(int argc, char *argv[])
                 acquisition(nbrAcquisition,delaiEntreSerie,nbrSerie,delaiAcquisition,ptr_mem_partagee);
                 /* On libère la mémoire partagée */
                 shmdt(ptr_mem_partagee);
-                
-                Valretour = semop(semaphore,sem_V,1);
+                printf("FIN ACQUISITION\n");
+                Valretour = semop(semaphore_Proc_Acquisition_Stockage,sem_V,1);
                 if(Valretour < 0)
                 {
                     perror("Erreur rendre semaphore\n");
@@ -264,12 +273,21 @@ int main(int argc, char *argv[])
             sleep(1);
             while(incrementAcquisition < nbrSerie)
             {
-                Valretour = semop(semaphore,sem_P,1);
+                
+                Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_P,1);
                 if(Valretour < 0)
                 {
                     perror("Erreur prendre semaphore\n");
                     exit(-3);
                 }
+                printf("SEMAPHORE 2 ATTENTE PROCESSUS TRAITEMENT\n");
+                Valretour = semop(semaphore_Proc_Acquisition_Stockage,sem_P,1);
+                if(Valretour < 0)
+                {
+                    perror("Erreur prendre semaphore\n");
+                    exit(-3);
+                }
+
                 /* On attache le segment de mémoire partagée identifié par mem_ID au segment de données du processus 'Acquisition' dans une zone libre déterminée par le Système d'exploitation
                  et je m'assure que le segment de mémoire a été correctement attaché à mon processus
                  */
@@ -279,16 +297,25 @@ int main(int argc, char *argv[])
                 }
                 
                 printf("DEUXIEME SEMAPHORE\n");
+                printf("STOCKAGE\n");
                 stockage(nbrAcquisition, incrementAcquisition+1 ,ptr_mem_partagee);
                 /* On libère la mémoire partagée */
                 shmdt(ptr_mem_partagee);
                 
-                Valretour = semop(semaphore,sem_V,1);
+                printf("FIN STOCKAGE\n");
+                Valretour = semop(semaphore_Proc_Acquisition_Stockage,sem_V,1);
                 if(Valretour < 0)
                 {
                     perror("Erreur rendre semaphore\n");
                     exit(-4);
                 }
+                Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_V,1);
+                if(Valretour < 0)
+                {
+                    perror("Erreur rendre semaphore\n");
+                    exit(-4);
+                }
+
                 printf("SEMAPHORE 2 REND\n\n");
                 incrementAcquisition++;
                 sleep(delaiEntreSerie+1);
@@ -302,21 +329,7 @@ int main(int argc, char *argv[])
             
     }
     /*********************************** Fin du processus stockage ***********************************/
-    
-    
-    while (  wait(&status) > 0 )
-    {
-        printf("Un fils est mort, paix à son âme\n");
-    }
-    
-    semctl(semaphore, 0, IPC_RMID, 0);
-    
-	rtrn = shmctl(mem_ID_Proc_Acquisition, IPC_RMID, 0);
-	if(rtrn == -1)
-    {
-        perror("Ici Error\n");exit(-6);
-    }
-    
+
     
 	/*********************************** Création du processus traitement ***********************************/
  	pid_traitement = fork();
@@ -331,10 +344,30 @@ int main(int argc, char *argv[])
             
             /* Code du la fonction stockage.c */
 		case 0:
-			printf("\n\n\t\t\t Partie traitement \n\n");
-			/* traitement();*/
-            printf("Sleep dans la partie traitement\n");
-            sleep(3);
+            sleep(delaiEntreSerie+nbrAcquisition*delaiAcquisition+2);
+            while(incrementAcquisition < nbrSerie)
+            {
+                Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_P,1);
+                if(Valretour < 0)
+                {
+                    perror("Erreur prendre semaphore\n");
+                    exit(-3);
+                }
+                
+                printf("TROISIEME SEMAPHORE\n");
+                /* traitement();*/
+                printf("TRAITEMENT\n");
+                printf("FIN TRAITEMENT\n");
+                Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_V,1);
+                if(Valretour < 0)
+                {
+                    perror("Erreur rendre semaphore\n");
+                    exit(-4);
+                }
+                printf("SEMAPHORE 3 REND\n\n");
+                incrementAcquisition++;
+                sleep(delaiEntreSerie+nbrAcquisition*delaiAcquisition+3);
+            }
 			exit(1);
             break;
             
@@ -345,9 +378,17 @@ int main(int argc, char *argv[])
 	/*********************************** Fin du processus traitement ***********************************/
 	
     
-    if(wait(NULL) > 0)
+    while (  wait(&status) > 0 )
     {
-        printf("Le dernier fils est mort\n");
+        printf("Un fils est mort, paix à son âme\n");
+    }
+    semctl(semaphore_Proc_Stockage_Traitement, 0, IPC_RMID, 0);
+    semctl(semaphore_Proc_Acquisition_Stockage, 0, IPC_RMID, 0);
+    
+    rtrn = shmctl(mem_ID_Proc_Acquisition, IPC_RMID, 0);
+	if(rtrn == -1)
+    {
+        perror("Ici Error\n");exit(-6);
     }
 	/*********************************** Code du pere ***********************************/
 	printf("\n\n\t\t\t Fin du code du pere \n\n");

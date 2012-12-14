@@ -6,17 +6,17 @@
 /**
  * \brief see Header
 */
-void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, unsigned int nbrAcquisitionSerie, unsigned int delaiEntreDeuxAcquisition,int* tabResultat)
+void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, unsigned int nbSerie, unsigned int delaiEntreDeuxAcquisition,int* tabResultat)
 {
     unsigned int incrementalArray;
     
     for(incrementalArray =0; incrementalArray<nbAcquisition+1;incrementalArray++)
     {
         tabResultat[incrementalArray]= incrementalArray;
-        printf("On met la valeur %d dans le tableau\n",incrementalArray);
+        /*printf("On met la valeur %d dans le tableau\n",incrementalArray);*/
         sleep(delaiEntreDeuxAcquisition);
     }
-    printf("_________\n Fin de l'écriture \n\n");
+    /*printf("_________\n Fin de l'acquisition \n\n");*/
 }
 
 

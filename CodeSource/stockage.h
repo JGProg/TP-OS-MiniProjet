@@ -9,6 +9,8 @@
 
 #ifndef TP_OS_stockage_h
 #define TP_OS_stockage_h
+#include <string.h>
+#include <stdio.h>
 
 void stockage(int nbAcquisition, int NumeroSeries,int * tabDonnees);
 
