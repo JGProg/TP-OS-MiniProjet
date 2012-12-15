@@ -1,26 +1,63 @@
-//
-//  File.c
-//  TP-OS
-//
-//  Created by jessy giacomoni  and Adrien Rogier on 01/12/12.
-//  Copyright (c) 2012 jessy giacomoni. All rights reserved.
-//
+#include "traitement.h"
 
-#include <stdio.h>
-
-
-void traitement(int nbAcquisition, int NumeroSeries)
+void traitement(int NumeroSerie)
 {
-    int incrementalArray;
-    char NomFile[FILENAME_MAX] = "data_1_";
+    char NomFichierData1[FILENAME_MAX] = "data_1_";
+    char NomFichierData2[FILENAME_MAX] = "data_2_";
     char Line[255];
-    FILE * fichier;
-    sprintf(NomFile,"Data_2_/data_2_%d.txt",NumeroSeries);
+    char line_lues[512];
+    int premiereValeur;
+    int deuxiemeValeur;
+    
+    FILE * Fichier_Data_2_;
+    FILE * Fichier_Data_1_;
+    
+    sprintf(NomFichierData1,"Data_1_/data_1_%d.txt",NumeroSerie);
+    sprintf(NomFichierData2,"Data_2_/data_2_%d.txt",NumeroSerie);
     
     
-    fichier = fopen(NomFile,"w");
-
-    printf("_________\n Fin du traitement \n\n");
+    Fichier_Data_1_ = fopen(NomFichierData1,"r");
+    if(Fichier_Data_1_ == NULL)
+    {
+        printf("Probleme Ouverture du fichier\n");
+        exit(3);
+    }
     
-    fclose(fichier);
+    Fichier_Data_2_ = fopen(NomFichierData2,"w+");
+    if(Fichier_Data_2_ == NULL)
+    {
+        printf("Probleme Ouverture du fichier\n");
+        exit(3);
+    }
+    
+    while(fgets(line_lues,512,Fichier_Data_1_) != NULL)
+    {
+        premiereValeur = atoi(line_lues);
+        /* printf("premiere valeur %d \n",premiereValeur); */
+        if(fgets(line_lues,512,Fichier_Data_1_)!= NULL)
+        {
+            deuxiemeValeur = atoi(line_lues);
+            /* printf("Deuxieme valeur %d \n",deuxiemeValeur); */
+            sprintf(Line,"%d\n",deuxiemeValeur-premiereValeur);
+            fwrite(Line,sizeof(char),strlen(Line),Fichier_Data_2_);
+        }
+        else
+        {
+            sprintf(Line,"%d\n",premiereValeur);
+            fwrite(Line,sizeof(char),strlen(Line),Fichier_Data_2_);
+        }
+        
+    }
+    
+    fclose(Fichier_Data_1_);
+    fclose(Fichier_Data_2_);
+    /* printf("_________\n Fin du traitement \n\n"); */
 }
+
+/*
+int main(void)
+{
+    traitement(1);
+    return 0;
+}
+*/

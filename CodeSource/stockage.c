@@ -18,7 +18,7 @@ void stockage(int nbAcquisition, int NumeroSeries ,int * tabDonnees)
     sprintf(NomFile,"Data_1_/data_1_%d.txt",NumeroSeries);
     
     
-    fichier = fopen(NomFile,"w");
+    fichier = fopen(NomFile,"w+");
     /*printf("Le numéro de série est : %d \n",NumeroSeries);*/
     for(incrementalArray =0; incrementalArray<nbAcquisition+1;incrementalArray++)
     {

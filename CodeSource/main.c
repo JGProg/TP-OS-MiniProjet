@@ -37,6 +37,7 @@
 /* include source code */
 #include "acquisition.h"
 #include "stockage.h"
+#include "traitement.h"
 
 /* Pour la mémoire partagée */
 #define CLEF 42
@@ -355,7 +356,7 @@ int main(int argc, char *argv[])
                 }
                 
                 printf("TROISIEME SEMAPHORE\n");
-                /* traitement();*/
+                traitement(incrementAcquisition+1);
                 printf("TRAITEMENT\n");
                 printf("FIN TRAITEMENT\n");
                 Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_V,1);

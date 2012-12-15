@@ -1,14 +1,10 @@
-//
-//  traitement.h
-//  TP-OS
-//
-//  Created by jessy giacomoni and Adrien Rogier on 01/12/12.
-//  Copyright (c) 2012 jessy giacomoni. All rights reserved.
-//
-
 #ifndef TP_OS_traitement_h
 #define TP_OS_traitement_h
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+void traitement(int NumeroSerie);
 
 #endif

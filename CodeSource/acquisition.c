@@ -12,7 +12,7 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
     
     for(incrementalArray =0; incrementalArray<nbAcquisition+1;incrementalArray++)
     {
-        tabResultat[incrementalArray]= incrementalArray;
+        tabResultat[incrementalArray]= recupereHeure();
         /*printf("On met la valeur %d dans le tableau\n",incrementalArray);*/
         sleep(delaiEntreDeuxAcquisition);
     }
@@ -48,7 +48,6 @@ int recupereHeure(void)
     gettimeofday(tv,tz);
     
     /* Affichage des résultats */
-    printf("\n\n Seconde : [%d] \n\n µseconde : [%d] \n\n",(int)tv->tv_sec,(int)tv->tv_usec);
-    
-    return tv->tv_sec;
+    /*printf("\n\n Seconde : [%d] \n\n µseconde : [%d] \n\n",(int)tv->tv_sec,(int)tv->tv_usec);*/
+    return tv->tv_usec*1000000 + tv->tv_sec;
 }
