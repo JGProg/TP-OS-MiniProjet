@@ -51,13 +51,22 @@ void traitement(int NumeroSerie)
     
     fclose(Fichier_Data_1_);
     fclose(Fichier_Data_2_);
+    
+    
     /* printf("_________\n Fin du traitement \n\n"); */
 }
 
 /*
 int main(void)
 {
-    traitement(1);
+ FILE * f;
+ f = popen("gnuplot","w");
+ fprintf(f,"plot \"toto.dat\" with lines \n");
+
+    fflush(f);
+ sleep(100);
+ pclose(f);
+
     return 0;
 }
-*/
+ */
