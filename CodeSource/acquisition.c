@@ -1,3 +1,12 @@
+/**
+ * \file acquisition.c
+ * \brief Content of acquisition.c.
+ * \author jessy giacomoni and Adrien Rogier
+ * \version 0.1
+ * \date 01/12/12
+ * Copyright (c) 2012 jessy giacomoni  and Adrien Rogier. All rights reserved.
+ */
+
 #include <stdio.h>
 #include "acquisition.h"
 

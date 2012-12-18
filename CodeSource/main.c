@@ -15,8 +15,8 @@
  ************************************************************************************************/
 
 /**
- * \file acquisition.h
- * \brief Header of acquisition.c.
+ * \file main.c
+ * \brief Content of main.c
  * \author jessy giacomoni and Adrien Rogier
  * \version 0.1
  * \date 01/12/12
