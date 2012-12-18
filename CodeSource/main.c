@@ -43,9 +43,7 @@
 #define CLEF 42
 
 
-/**
- * \todo Le père doit attendre que ses fils soit terminer avant qu'il se termine.
- */
+
 int main(int argc, char *argv[])
 {
     

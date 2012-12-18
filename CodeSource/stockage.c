@@ -9,6 +9,9 @@
 
 #include "stockage.h"
 
+/**
+ * \brief see Header
+ */
 void stockage(int nbAcquisition, int NumeroSeries ,int * tabDonnees)
 {
     int incrementalArray;

@@ -1,5 +1,16 @@
+/**
+ * \file traitement.c
+ * \brief header of traitement.c
+ * \author jessy giacomoni and Adrien Rogier
+ * \version 0.1
+ * \date 01/12/12
+ * Copyright (c) 2012 jessy giacomoni  and Adrien Rogier. All rights reserved.
+ */
 #include "traitement.h"
 
+/**
+ * \brief see Header
+ */
 void traitement(int NumeroSerie)
 {
     char NomFichierData1[FILENAME_MAX] = "data_1_";

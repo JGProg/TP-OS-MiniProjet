@@ -12,6 +12,10 @@
 #include <string.h>
 #include <stdio.h>
 
+/**
+ * \pre 'nbAcquisition' : Le nombre de séries d'acquisition, il ne peut pas être négatif, 'NumeroSeries' est le numéro de la série courante., 'tabDonne' c'est le tableau qui comporte les données
+ * \post Le tableau est copié dans un fichier txt. sous la fome data_1_X.txt ou X est le numéro de la série.
+ */
 void stockage(int nbAcquisition, int NumeroSeries,int * tabDonnees);
 
 #endif
