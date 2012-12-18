@@ -1,17 +1,17 @@
 /***********************************************************************************************|
- |	Entreprise 	|	ESISAR								|
- |	Matière 	|	CS336								|
- |	Sujet		|	TP2 ET 3							|
- |	Auteur 		|	GIACOMONI Jessy et ROGIER Adrien				|
- |	Statut 		|	3 Apprenti							|
- |	Date		|	29/11/2012							|
- |	Version		|	1.0								|
- |---------------------------------------------------------------------------------------------- |
- |  DESCRIPTION :										|
- |	Ceci est notre brique général. Elle est testé et opérationnel.				|
- | 	Il faut complété le code manquant dans chacun des switchs, ainsi			|
- | 	qu'à la fin pour le code du père.							|
- |												|
+ |	Entreprise 	|	ESISAR                                                                      |
+ |	Matière 	|	CS336                                                                       |
+ |	Sujet		|	TP2 ET 3                                                                    |
+ |	Auteur 		|	GIACOMONI Jessy et ROGIER Adrien                                            |
+ |	Statut 		|	3 Apprenti                                                                  |
+ |	Date		|	29/11/2012                                                                  |
+ |	Version		|	1.0                                                                         |
+ |----------------------------------------------------------------------------------------------|
+ |  DESCRIPTION :                                                                               |
+ |	Ceci est notre brique général. Elle est testé et opérationnel.                              |
+ | 	Il faut complété le code manquant dans chacun des switchs, ainsi                            |
+ | 	qu'à la fin pour le code du père.                                                           |
+ |                                                                                              |
  ************************************************************************************************/
 
 /**
