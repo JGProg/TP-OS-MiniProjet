@@ -29,6 +29,7 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
 }
 
 
+
 /**
  * \brief see Header
  */
@@ -44,6 +45,10 @@ int recupereHeure(void)
         perror("Problème allocation mémoire");
         exit(1);
     }
+    
+    tz->tz_minuteswest = 0;
+	tz->tz_dsttime = DST_WET;
+    
     /* Déclaration d'un pointeur sur une structure de type timezone */
     
     tv = (struct timeval *) malloc (sizeof(struct timeval));
