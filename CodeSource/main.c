@@ -354,7 +354,7 @@ int main(int argc, char *argv[])
                 }
                 
                 printf("TROISIEME SEMAPHORE\n");
-                traitement(incrementAcquisition+1);
+                traitement(incrementAcquisition+1,nbrSerie);
                 printf("TRAITEMENT\n");
                 printf("FIN TRAITEMENT\n");
                 Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_V,1);

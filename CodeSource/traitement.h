@@ -14,11 +14,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <time.h>
 /**
  * \pre 'NumeroSeries' est le numéro de la série courante., 'tabDonne' c'est le tableau qui comporte les données
  * \post Comparaison des valeurs depuis le fichier généré par le processus stockage.
  */
-void traitement(int NumeroSerie);
+void traitement(int NumeroSerie, int nbrSerie);
 
+
+void DessinerGraphe(int nbrSerie);
 #endif

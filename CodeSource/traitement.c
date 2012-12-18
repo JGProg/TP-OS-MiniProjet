@@ -11,7 +11,7 @@
 /**
  * \brief see Header
  */
-void traitement(int NumeroSerie)
+void traitement(int NumeroSerie, int nbrSerie)
 {
     char NomFichierData1[FILENAME_MAX] = "data_1_";
     char NomFichierData2[FILENAME_MAX] = "data_2_";
@@ -62,22 +62,50 @@ void traitement(int NumeroSerie)
     
     fclose(Fichier_Data_1_);
     fclose(Fichier_Data_2_);
-    
+    if(NumeroSerie == nbrSerie)
+    {
+        DessinerGraphe(nbrSerie);
+    }
     
     /* printf("_________\n Fin du traitement \n\n"); */
+}
+
+
+void DessinerGraphe(int nbrSerie)
+{
+    int incrementalNumeroSerie;
+    char FinFichier[1000] = "plot ";
+    char NomFile[FILENAME_MAX] = "data_1_";
+    
+    for (incrementalNumeroSerie=1; incrementalNumeroSerie < nbrSerie; incrementalNumeroSerie++)
+    {
+        sprintf(NomFile,"\"data_2_/data_2_%d.txt\" with lines , ",incrementalNumeroSerie);
+        strcat(FinFichier,NomFile);
+    }
+    sprintf(NomFile,"\"data_2_/data_2_%d.txt\" with lines\r\n ",nbrSerie);
+    strcat(FinFichier,NomFile);
+    
+    printf("FIn fichier : %s\n",FinFichier);
+    
+    FILE * f;
+    f = popen("gnuplot","w");
+    fprintf(f,"set xlabel \"Comparaison\r\n");
+    fprintf(f,"set ylabel \"Numero Acquisition \r\n");
+    fprintf(f,"set multiplot\r\n");
+    fprintf(f,"%s",FinFichier);
+    
+    fflush(f);
+    sleep(100);
+    
+    pclose(f);
+
 }
 
 /*
 int main(void)
 {
- FILE * f;
- f = popen("gnuplot","w");
- fprintf(f,"plot \"toto.dat\" with lines \n");
-
-    fflush(f);
- sleep(100);
- pclose(f);
-
+    DessinerGraphe(2);
     return 0;
 }
  */
+ 
