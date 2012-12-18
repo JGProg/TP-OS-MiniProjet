@@ -4,8 +4,8 @@ CodeSource/prog
 CodeSource/.DS_Store
 .DS_Store
 CodeSource/doc/*
-CodeSource/Data_2_/**/*
-CodeSource/Data_1_/**/*
+CodeSource/Data_2_/*
+CodeSource/Data_1_/*
 gnuplot-4.6.1/*
 
 # Object files

@@ -42,7 +42,6 @@
 /* Pour la mémoire partagée */
 #define CLEF 42
 
-void Reveil(int sig){}
 
 /**
  * \todo Le père doit attendre que ses fils soit terminer avant qu'il se termine.
@@ -80,15 +79,6 @@ int main(int argc, char *argv[])
     } argument;
     
     key_t key;
-    
-    int ptr[1];
-    ptr[0]=3;
-    
-    
-    if(signal(SIGALRM,Reveil)== SIG_ERR)
-    {
-        perror("Probleme definition signal()");exit(1);
-    }
     
     
     /* Creation des pid pour les forks */
@@ -172,7 +162,7 @@ int main(int argc, char *argv[])
         perror("Probleme de creation de sémaphore\n");
         exit(-2);
     }
-
+    
     semaphore_Proc_Stockage_Traitement = semget(key ,1,IPC_CREAT | 0666);
     if(semaphore_Proc_Stockage_Traitement < 0)
     {
@@ -241,8 +231,6 @@ int main(int argc, char *argv[])
                     perror("shmat");
                     exit(1);
                 }
-                
-                
                 acquisition(nbrAcquisition,delaiEntreSerie,nbrSerie,delaiAcquisition,ptr_mem_partagee);
                 /* On libère la mémoire partagée */
                 shmdt(ptr_mem_partagee);
@@ -255,7 +243,6 @@ int main(int argc, char *argv[])
                 }
                 printf("SEMAPHORE 1 REND\n\n");
                 incrementAcquisition++;
-                kill(pid_stockage,SIGALRM);
                 sleep(delaiEntreSerie);
             }
 			exit(1);
@@ -284,15 +271,10 @@ int main(int argc, char *argv[])
             
             /* Code de la fonction stockage */
 		case 0:
+            sleep(1);
             while(incrementAcquisition < nbrSerie)
             {
-                pause();
-                Valretour = semop(semaphore_Proc_Acquisition_Stockage,sem_P,1);
-                if(Valretour < 0)
-                {
-                    perror("Erreur prendre semaphore\n");
-                    exit(-3);
-                }
+                
                 Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_P,1);
                 if(Valretour < 0)
                 {
@@ -300,6 +282,12 @@ int main(int argc, char *argv[])
                     exit(-3);
                 }
                 printf("SEMAPHORE 2 ATTENTE PROCESSUS TRAITEMENT\n");
+                Valretour = semop(semaphore_Proc_Acquisition_Stockage,sem_P,1);
+                if(Valretour < 0)
+                {
+                    perror("Erreur prendre semaphore\n");
+                    exit(-3);
+                }
                 
                 /* On attache le segment de mémoire partagée identifié par mem_ID au segment de données du processus 'Acquisition' dans une zone libre déterminée par le Système d'exploitation
                  et je m'assure que le segment de mémoire a été correctement attaché à mon processus
@@ -328,10 +316,10 @@ int main(int argc, char *argv[])
                     perror("Erreur rendre semaphore\n");
                     exit(-4);
                 }
-
+                
                 printf("SEMAPHORE 2 REND\n\n");
                 incrementAcquisition++;
-                kill(pid_traitement,SIGALRM);
+                sleep(delaiEntreSerie+1);
             }
             exit(1);
             break;
@@ -342,7 +330,7 @@ int main(int argc, char *argv[])
             
     }
     /*********************************** Fin du processus stockage ***********************************/
-
+    
     
 	/*********************************** Création du processus traitement ***********************************/
  	pid_traitement = fork();
@@ -357,9 +345,9 @@ int main(int argc, char *argv[])
             
             /* Code du la fonction stockage.c */
 		case 0:
+            sleep(delaiEntreSerie+nbrAcquisition*delaiAcquisition+2);
             while(incrementAcquisition < nbrSerie)
             {
-                pause();
                 Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_P,1);
                 if(Valretour < 0)
                 {
@@ -379,6 +367,7 @@ int main(int argc, char *argv[])
                 }
                 printf("SEMAPHORE 3 REND\n\n");
                 incrementAcquisition++;
+                sleep(delaiEntreSerie+nbrAcquisition*delaiAcquisition+3);
             }
 			exit(1);
             break;
@@ -407,4 +396,3 @@ int main(int argc, char *argv[])
   	/******************************** Fin de code du pere *******************************/
     return 0;
 }
-
