@@ -9,13 +9,20 @@
 
 #ifndef TP_OS_stockage_h
 #define TP_OS_stockage_h
-#include <string.h>
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/shm.h>
+#include <sys/ipc.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <sys/sem.h>
+#include <string.h>
 /**
- * \pre 'nbAcquisition' : Le nombre de séries d'acquisition, il ne peut pas être négatif, 'NumeroSeries' est le numéro de la série courante., 'tabDonne' c'est le tableau qui comporte les données
+ * \pre 
  * \post Le tableau est copié dans un fichier txt. sous la fome data_1_X.txt ou X est le numéro de la série.
  */
-void stockage(int nbAcquisition, int NumeroSeries,int * tabDonnees);
+void stockage(int nbrAcquisition, int delaiEntreSerie, unsigned int nbrSerie,int semaphore_Proc_Acquisition_Stockage,int semaphore_Proc_Stockage_Traitement, struct sembuf *sem_P,struct sembuf *sem_V, int mem_ID_Proc_Stockage,int* ptr_mem_partagee);
 
 #endif

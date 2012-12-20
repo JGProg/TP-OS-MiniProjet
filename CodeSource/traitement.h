@@ -13,13 +13,20 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/shm.h>
+#include <sys/ipc.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <sys/sem.h>
 #include <string.h>
-#include <time.h>
+
 /**
- * \pre 'NumeroSeries' est le numéro de la série courante., 'tabDonne' c'est le tableau qui comporte les données
+ * \pre
  * \post Comparaison des valeurs depuis le fichier généré par le processus stockage.
  */
-void traitement(int NumeroSerie, int nbrSerie);
+void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,struct sembuf *sem_P,struct sembuf *sem_V, unsigned int delaiEntreSerie, unsigned int delaiAcquisition, unsigned int nbrAcquisition);
 
 
 void DessinerGraphe(int nbrSerie);
