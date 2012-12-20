@@ -22,7 +22,6 @@ void stockage(int nbrAcquisition, int delaiEntreSerie, unsigned int nbrSerie,int
     FILE * fichier;
        
 
-    
     while(incrementAcquisition < nbrSerie)
     {
         
@@ -65,8 +64,6 @@ void stockage(int nbrAcquisition, int delaiEntreSerie, unsigned int nbrSerie,int
         
         fclose(fichier);
         
-        
-        
         /* On libère la mémoire partagée */
         shmdt(ptr_mem_partagee);
         
@@ -88,9 +85,5 @@ void stockage(int nbrAcquisition, int delaiEntreSerie, unsigned int nbrSerie,int
         incrementAcquisition++;
         sleep(delaiEntreSerie+1);
     }
-    
-    
-    
-     
-    
+
 }
