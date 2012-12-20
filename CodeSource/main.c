@@ -59,9 +59,6 @@ int main(int argc, char *argv[])
     /* Il fera la taille du nombre d'acquisition. */
     int * tabResultat;
     
-    /* Pour le nombre de fois que l'on doit appeler la fonction acquisition */
-    unsigned int incrementAcquisition;
-    
     /* Semaphore */
     int semaphore_Proc_Acquisition_Stockage;
     int semaphore_Proc_Stockage_Traitement;
@@ -95,14 +92,8 @@ int main(int argc, char *argv[])
     
     /* INITIALISATIONS */
     
-    
     /* Initialisation de la taille du nombre d'acquisition */
     tabResultat = (int *) malloc(nbrAcquisition * sizeof(int));
-    /* Test memoire partagée */
-    tabResultat[0] = 5;
-    
-    /* Pour le nombre de fois que l'on doit appeler la fonction acquisition */
-    incrementAcquisition = 0;
     
     /* Des pid pour les forks */
     pid_acquisition=0;
@@ -178,7 +169,6 @@ int main(int argc, char *argv[])
     /* On test les paramètres */
     if(argc != 5)
     {
-        printf("%d",argc);
         printf("Le nombre de paramètre n'est pas correct\n");
         printf("\t-> n : le nombre de séries d'acuqisition qui seront réalisés\n");
         printf("\t-> delai : le temps en seconde entre 2 série d'acquisition de données\n");
