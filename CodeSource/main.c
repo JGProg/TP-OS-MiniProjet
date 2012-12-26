@@ -14,6 +14,19 @@
  |                                                                                              |
  ************************************************************************************************/
 
+/*********************************************************************
+ * Salut JESSSSSSSSSSYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+ * j'ai repris des commentaires, je sais pas s'ils sont bien repris ou non, alors j'ai indiqué
+ * avec une ligne d'étoile comme ci-dessous :
+ * /************************************************************************************/
+ /* lorsque j'ai fait une modification( uniquement dans le main). J'ai laissé ton commentaire, 
+ et j'ai écris juste en dessous ce que je propose. Je te laisse relire mes propositions
+ Si tu veux pas les changer no problem, c'est juste des suggestions. Vu que c'est toi qui a fait le projet,
+ tu es mieux placé que moi pour savoir si c'est mieux ou non. Tandis que moi j'ai plus de recul vu que je "découvre" en
+ quelques sortes ^_^ 
+ *************************************************************************/
+ 
+
 /**
  * \file main.c
  * \brief Content of main.c
@@ -22,6 +35,8 @@
  * \date 01/12/12
  * Copyright (c) 2012 jessy giacomoni  and Adrien Rogier. All rights reserved.
  */
+
+/************ INCLUDE ET DEFINE ***************/
 
 /* include global */
 #include <stdio.h>
@@ -42,24 +57,31 @@
 /* Pour la mémoire partagée */
 #define CLEF 42
 
+/********* FIN INCLUDE ET DEFINE *****************/
 
 
 int main(int argc, char *argv[])
 {
     
-    /* DECLARATIONS  */
+    
+/************************************* DECLARATIONS DES VARIABLES ***********************************/
+    
     int status;
     
-    /* Ceux passer en paramètres */
+    /* Variable passer en paramètres du programme */
     unsigned int nbrSerie;
     unsigned int delaiEntreSerie;
     unsigned int nbrAcquisition;
     unsigned int delaiAcquisition;
     
+    /*************************************************************/
     /* Il fera la taille du nombre d'acquisition. */
+    /* Déclaration d'un pointeur qui pointera sur une zone mémoire */
     int * tabResultat;
     
+    /*************************************************************/
     /* Semaphore */
+    /* --------------- DECLARATIONS ET INITIALISATIONS DES SEMAPHORES ------------*/
     int semaphore_Proc_Acquisition_Stockage;
     int semaphore_Proc_Stockage_Traitement;
     struct sembuf *sem_P = (struct sembuf *) malloc(2*sizeof(struct sembuf));
@@ -74,7 +96,7 @@ int main(int argc, char *argv[])
     key_t key;
     
     
-    /* Creation des pid pour les forks */
+    /* creation des PID pour les forks */
     pid_t pid_acquisition;
     pid_t pid_stockage;
     pid_t pid_traitement;
@@ -89,19 +111,22 @@ int main(int argc, char *argv[])
     /* Des que les deux premiers processus on terminé on termine la mémoire partagée */
     int rtrn;
     
+    /********************************** FIN DECLARATION **************************************/
     
-    /* INITIALISATIONS */
+    
+    
+    /********************************** INITIALISATIONS **************************************/
     
     /* Initialisation de la taille du nombre d'acquisition */
     tabResultat = (int *) malloc(nbrAcquisition * sizeof(int));
     
-    /* Des pid pour les forks */
+    /* Initialisations es pid pour les forks */
     pid_acquisition=0;
     pid_stockage=0;
     pid_traitement=0;
     
     
-    /* MEMOIRE PARTAGEE */
+    /*-------------------------- MEMOIRE PARTAGEE -----------------------------*/
     
     /* Nouveau segment mémoire de taille "nbAquisition" octets, avec des droits d'écriture et de lecture
      et on s'assure que l'espace mémoire a été correctement créé
@@ -113,7 +138,7 @@ int main(int argc, char *argv[])
         exit(-5);
     }
     
-    /* On cherche lesegment mémoire associé à CLEF et je récupère l'identificateur de ce segment mémoire. On attribue des droits de lecture uniquement
+    /* On cherche le segment mémoire associé à CLEF et je récupère l'identificateur de ce segment mémoire. On attribue des droits de lecture uniquement
      et on s''assure que l'espace mémoire a été correctement créé */
     mem_ID_Proc_Stockage = shmget(CLEF, sizeof(tabResultat), 0444);
     if (mem_ID_Proc_Stockage < 0)
@@ -122,7 +147,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
-    /* CREATION du sémpahore */
+    /* Creation du sémpahore */
     
     /*
      struct sembuf {
@@ -142,7 +167,10 @@ int main(int argc, char *argv[])
     
     key = 666;
     key = 42;
+    
+    /*************************************************************/
     /* Creation du sémaphore */
+    /* Creation du sémaphore entre le processus Acquisition et Stockage */
     semaphore_Proc_Acquisition_Stockage = semget(key ,1,IPC_CREAT | 0666);
     if(semaphore_Proc_Acquisition_Stockage < 0)
     {
@@ -150,6 +178,8 @@ int main(int argc, char *argv[])
         exit(-2);
     }
     
+    /*************************************************************/
+    /* Creation du sémaphore entre le processus Stockage et Traitement */
     semaphore_Proc_Stockage_Traitement = semget(key ,1,IPC_CREAT | 0666);
     if(semaphore_Proc_Stockage_Traitement < 0)
     {
@@ -157,14 +187,16 @@ int main(int argc, char *argv[])
         exit(-2);
     }
     
-    /* Changement d'état du sémaphore */
+    /* Changement d'état des sémaphores */
     argument.val = 1;
     semctl(semaphore_Proc_Acquisition_Stockage,0,SETVAL,argument);
     argument.val = 2;
     semctl(semaphore_Proc_Stockage_Traitement,0,SETVAL,argument);
+    
+    /****************************************** FIN INITIALISATION *********************************************/
 	
     system("clear");
-	printf("\n\n================================ TP 2 ET 3 : SEMAPHORE ET MEMOIRE PARTAGEE ================================\n\n");
+    printf("\n\n================================ TP 2 ET 3 : SEMAPHORE ET MEMOIRE PARTAGEE ================================\n\n");
     
     /* On test les paramètres */
     if(argc != 5)
@@ -266,7 +298,10 @@ int main(int argc, char *argv[])
     
     while (  wait(&status) > 0 )
     {
-        printf("Un fils est mort, paix à son âme\n");
+    	/**********************************************************************/
+    	/* Tu en as tué combien avec le nombre d'éxecution que t'as lancé pendant que tu tester le code ? 
+    	Il te faut au moins une variable de type double non ? */
+        printf("Un fils est mort, paix à son âme\n");    // AAAASSSSSSAAAAASSSSSIIIINNNNNNN
     }
     semctl(semaphore_Proc_Stockage_Traitement, 0, IPC_RMID, 0);
     semctl(semaphore_Proc_Acquisition_Stockage, 0, IPC_RMID, 0);
