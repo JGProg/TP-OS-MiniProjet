@@ -14,19 +14,6 @@
  |                                                                                              |
  ************************************************************************************************/
 
-/*********************************************************************
- * Salut JESSSSSSSSSSYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
- * j'ai repris des commentaires, je sais pas s'ils sont bien repris ou non, alors j'ai indiqué
- * avec une ligne d'étoile comme ci-dessous :
- * /************************************************************************************/
- /* lorsque j'ai fait une modification( uniquement dans le main). J'ai laissé ton commentaire, 
- et j'ai écris juste en dessous ce que je propose. Je te laisse relire mes propositions
- Si tu veux pas les changer no problem, c'est juste des suggestions. Vu que c'est toi qui a fait le projet,
- tu es mieux placé que moi pour savoir si c'est mieux ou non. Tandis que moi j'ai plus de recul vu que je "découvre" en
- quelques sortes ^_^ 
- *************************************************************************/
- 
-
 /**
  * \file main.c
  * \brief Content of main.c
@@ -64,7 +51,7 @@ int main(int argc, char *argv[])
 {
     
     
-/************************************* DECLARATIONS DES VARIABLES ***********************************/
+/***************************** DECLARATIONS DES VARIABLES + INITIALISATION *****************************/
     
     int status;
     
@@ -74,14 +61,21 @@ int main(int argc, char *argv[])
     unsigned int nbrAcquisition;
     unsigned int delaiAcquisition;
     
-    /*************************************************************/
-    /* Il fera la taille du nombre d'acquisition. */
     /* Déclaration d'un pointeur qui pointera sur une zone mémoire */
     int * tabResultat;
     
-    /*************************************************************/
-    /* Semaphore */
-    /* --------------- DECLARATIONS ET INITIALISATIONS DES SEMAPHORES ------------*/
+    /* Pointeur sur l'adresse d'attachement du segment de mémoire partagée */
+    int* ptr_mem_partagee;
+    
+    /* Des que les deux premiers processus on terminé on termine la mémoire partagée */
+    int rtrn;
+    
+    /* Identificateur du segment de mémoire partagée associé à CLEF */
+    int mem_ID_Proc_Acquisition;
+    int mem_ID_Proc_Stockage;
+    
+    /* --------------- DECLARATIONS + INITIALISATIONS DES SEMAPHORES ------------*/
+    
     int semaphore_Proc_Acquisition_Stockage;
     int semaphore_Proc_Stockage_Traitement;
     struct sembuf *sem_P = (struct sembuf *) malloc(2*sizeof(struct sembuf));
@@ -95,21 +89,13 @@ int main(int argc, char *argv[])
     
     key_t key;
     
+    /* ----------------------------- FIN SEMAPHORE ------------------------------*/
+    
     
     /* creation des PID pour les forks */
     pid_t pid_acquisition;
     pid_t pid_stockage;
     pid_t pid_traitement;
-    
-    /* identificateur du segment de mémoire partagée associé à CLEF */
-    int mem_ID_Proc_Acquisition;
-    int mem_ID_Proc_Stockage;
-    
-    /* pointeur sur l'adresse d'attachement du segment de mémoire partagée */
-	int* ptr_mem_partagee;
-    
-    /* Des que les deux premiers processus on terminé on termine la mémoire partagée */
-    int rtrn;
     
     /********************************** FIN DECLARATION **************************************/
     
@@ -168,8 +154,6 @@ int main(int argc, char *argv[])
     key = 666;
     key = 42;
     
-    /*************************************************************/
-    /* Creation du sémaphore */
     /* Creation du sémaphore entre le processus Acquisition et Stockage */
     semaphore_Proc_Acquisition_Stockage = semget(key ,1,IPC_CREAT | 0666);
     if(semaphore_Proc_Acquisition_Stockage < 0)
@@ -178,7 +162,6 @@ int main(int argc, char *argv[])
         exit(-2);
     }
     
-    /*************************************************************/
     /* Creation du sémaphore entre le processus Stockage et Traitement */
     semaphore_Proc_Stockage_Traitement = semget(key ,1,IPC_CREAT | 0666);
     if(semaphore_Proc_Stockage_Traitement < 0)
@@ -282,7 +265,7 @@ int main(int argc, char *argv[])
 			return EXIT_FAILURE;
             break;
             
-            /* Code du la fonction stockage.c */
+            /* Code de la fonction stockage.c */
 		case 0:
             sleep(delaiEntreSerie+nbrAcquisition*delaiAcquisition+2);
             traitement(nbrSerie, semaphore_Proc_Stockage_Traitement,sem_P,sem_V, delaiEntreSerie,delaiAcquisition,nbrAcquisition);
@@ -293,15 +276,15 @@ int main(int argc, char *argv[])
 		default:
             break;
 	}
+	
 	/*********************************** Fin du processus traitement ***********************************/
 	
-    
+	
+	/********************************* Code du pere ***********************************/
+	
     while (  wait(&status) > 0 )
     {
-    	/**********************************************************************/
-    	/* Tu en as tué combien avec le nombre d'éxecution que t'as lancé pendant que tu tester le code ? 
-    	Il te faut au moins une variable de type double non ? */
-        printf("Un fils est mort, paix à son âme\n");    // AAAASSSSSSAAAAASSSSSIIIINNNNNNN
+        printf("Un fils est mort, paix à son âme\n");
     }
     semctl(semaphore_Proc_Stockage_Traitement, 0, IPC_RMID, 0);
     semctl(semaphore_Proc_Acquisition_Stockage, 0, IPC_RMID, 0);
@@ -311,8 +294,8 @@ int main(int argc, char *argv[])
     {
         perror("Ici Error\n");exit(-6);
     }
-	/*********************************** Code du pere ***********************************/
 	printf("\n\n\t\t\t Fin du code du pere \n\n");
+	
   	/******************************** Fin de code du pere *******************************/
     return 0;
 }
