@@ -78,6 +78,8 @@ int main(int argc, char *argv[])
     
     int semaphore_Proc_Acquisition_Stockage;
     int semaphore_Proc_Stockage_Traitement;
+    int semaphore_Proc_Acquisition_Traitement;
+    
     struct sembuf *sem_P = (struct sembuf *) malloc(2*sizeof(struct sembuf));
     struct sembuf *sem_V = (struct sembuf *) malloc(2*sizeof(struct sembuf));
     
@@ -137,9 +139,9 @@ int main(int argc, char *argv[])
     
     /*
      struct sembuf {
-     ushort_t        sem_num;        semaphore number
-     short           sem_op;          semaphore operation
-     short           sem_flg;         operation flags
+     ushort_t        sem_num;         nombre semaphore
+     short           sem_op;          Opération sur le semaphore
+     short           sem_flg;         Drapeau opération
      };
      */
     sem_P[0].sem_num =  0; /* Numéro de notre sémaphore: le premier et le seul */
@@ -170,11 +172,21 @@ int main(int argc, char *argv[])
         exit(-2);
     }
     
+    /* Creation du sémaphore entre le processus Stockage et Traitement */
+    semaphore_Proc_Acquisition_Traitement = semget(key ,1,IPC_CREAT | 0666);
+    if(semaphore_Proc_Acquisition_Traitement < 0)
+    {
+        perror("Probleme de creation de sémaphore\n");
+        exit(-2);
+    }
+    
     /* Changement d'état des sémaphores */
     argument.val = 1;
     semctl(semaphore_Proc_Acquisition_Stockage,0,SETVAL,argument);
     argument.val = 2;
     semctl(semaphore_Proc_Stockage_Traitement,0,SETVAL,argument);
+    argument.val = 3;
+    semctl(semaphore_Proc_Acquisition_Traitement,0,SETVAL,argument);
     
     /****************************************** FIN INITIALISATION *********************************************/
 	
@@ -214,7 +226,7 @@ int main(int argc, char *argv[])
             
             /* Code du la fonction acquisition.c */
 		case 0:
-            acquisition(nbrAcquisition,delaiEntreSerie, nbrSerie, delaiAcquisition,ptr_mem_partagee, semaphore_Proc_Acquisition_Stockage,sem_P,sem_V,mem_ID_Proc_Acquisition);
+            acquisition(nbrAcquisition,delaiEntreSerie, nbrSerie, delaiAcquisition,ptr_mem_partagee, semaphore_Proc_Acquisition_Stockage,sem_P,sem_V,mem_ID_Proc_Acquisition,semaphore_Proc_Acquisition_Traitement);
 			exit(1);
             break;
             
@@ -241,7 +253,6 @@ int main(int argc, char *argv[])
             
             /* Code de la fonction stockage */
 		case 0:
-            sleep(1);
             stockage( nbrAcquisition, delaiEntreSerie, nbrSerie, semaphore_Proc_Acquisition_Stockage, semaphore_Proc_Stockage_Traitement, sem_P,sem_V,  mem_ID_Proc_Stockage, ptr_mem_partagee);
             exit(1);
             break;
@@ -267,12 +278,11 @@ int main(int argc, char *argv[])
             
             /* Code de la fonction stockage.c */
 		case 0:
-            sleep(delaiEntreSerie+nbrAcquisition*delaiAcquisition+2);
-            traitement(nbrSerie, semaphore_Proc_Stockage_Traitement,sem_P,sem_V, delaiEntreSerie,delaiAcquisition,nbrAcquisition);
+            traitement(nbrSerie, semaphore_Proc_Stockage_Traitement,sem_P,sem_V, delaiEntreSerie,delaiAcquisition,nbrAcquisition,semaphore_Proc_Acquisition_Traitement);
             exit(1);
             break;
             
-            /* Code du pere */
+
 		default:
             break;
 	}

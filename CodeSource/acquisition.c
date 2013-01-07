@@ -15,7 +15,7 @@
 /**
  * \brief see Header
 */
-void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, unsigned int nbSerie, unsigned int delaiEntreDeuxAcquisition,int* ptr_mem_partagee, int semaphore_Proc_Acquisition_Stockage,struct sembuf *sem_P,struct sembuf *sem_V, int mem_ID_Proc_Acquisition)
+void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, unsigned int nbSerie, unsigned int delaiEntreDeuxAcquisition,int* ptr_mem_partagee, int semaphore_Proc_Acquisition_Stockage,struct sembuf *sem_P,struct sembuf *sem_V, int mem_ID_Proc_Acquisition, int semaphore_Proc_Acquisition_Traitement)
 {
     unsigned int incrementAcquisition = 0;
     int Valretour;
@@ -29,6 +29,15 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
             perror("Erreur prendre semaphore\n");
             exit(-3);
         }
+        
+        Valretour = semop(semaphore_Proc_Acquisition_Traitement,sem_P,1);
+        if(Valretour < 0)
+        {
+            perror("Erreur prendre semaphore\n");
+            exit(-3);
+        }
+        
+        
         printf("PREMIER SEMAPHORE \n");
         printf("ACQUISITION\n");
         /* On attache le segment de mémoire partagée identifié par mem_ID au segment de données du processus 'Acquisition' dans une zone libre déterminée par le Système d'exploitation
@@ -43,7 +52,6 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
         for(incrementalArray =0; incrementalArray<nbAcquisition+1;incrementalArray++)
         {
             ptr_mem_partagee[incrementalArray]= recupereHeure();
-            /*printf("On met la valeur %d dans le tableau\n",incrementalArray);*/
             sleep(delaiEntreDeuxAcquisition);
         }
         
@@ -51,6 +59,13 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
         /* On libère la mémoire partagée */
         shmdt(ptr_mem_partagee);
         printf("FIN ACQUISITION\n");
+        Valretour = semop(semaphore_Proc_Acquisition_Traitement,sem_V,1);
+        if(Valretour < 0)
+        {
+            perror("Erreur rendre semaphore\n");
+            exit(-4);
+        }
+        
         Valretour = semop(semaphore_Proc_Acquisition_Stockage,sem_V,1);
         if(Valretour < 0)
         {

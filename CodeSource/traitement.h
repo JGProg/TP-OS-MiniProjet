@@ -26,7 +26,7 @@
  * \pre
  * \post Comparaison des valeurs depuis le fichier généré par le processus stockage.
  */
-void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,struct sembuf *sem_P,struct sembuf *sem_V, unsigned int delaiEntreSerie, unsigned int delaiAcquisition, unsigned int nbrAcquisition);
+void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,struct sembuf *sem_P,struct sembuf *sem_V, unsigned int delaiEntreSerie, unsigned int delaiAcquisition, unsigned int nbrAcquisition, int semaphore_Proc_Acquisition_Traitement);
 
 
 void DessinerGraphe(int nbrSerie);

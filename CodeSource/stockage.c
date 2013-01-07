@@ -83,7 +83,6 @@ void stockage(int nbrAcquisition, int delaiEntreSerie, unsigned int nbrSerie,int
         
         printf("SEMAPHORE 2 REND\n\n");
         incrementAcquisition++;
-        sleep(delaiEntreSerie+1);
     }
 
 }

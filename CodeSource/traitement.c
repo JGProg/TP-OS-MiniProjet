@@ -12,7 +12,7 @@
 /**
  * \brief see Header
  */
-void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,struct sembuf *sem_P,struct sembuf *sem_V, unsigned int delaiEntreSerie, unsigned int delaiAcquisition, unsigned int nbrAcquisition)
+void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,struct sembuf *sem_P,struct sembuf *sem_V, unsigned int delaiEntreSerie, unsigned int delaiAcquisition, unsigned int nbrAcquisition, int semaphore_Proc_Acquisition_Traitement)
 {
     char NomFichierData1[FILENAME_MAX] = "data_1_";
     char NomFichierData2[FILENAME_MAX] = "data_2_";
@@ -28,13 +28,25 @@ void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,st
     
     while(incrementeSerie < nbrSerie)
     {
+        
         Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_P,1);
         if(Valretour < 0)
         {
             perror("Erreur prendre semaphore\n");
             exit(-3);
         }
+
+        printf("ATTENTE SEMAPHORE TRAITEMENT\n");
+        Valretour = semop(semaphore_Proc_Acquisition_Traitement,sem_P,1);
+        if(Valretour < 0)
+        {
+            perror("Erreur prendre semaphore\n");
+            exit(-3);
+        }
+
+                
         
+               
         printf("TROISIEME SEMAPHORE\n");
         
         sprintf(NomFichierData1,"Data_1_/data_1_%d.txt",incrementeSerie+1);
@@ -80,6 +92,14 @@ void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,st
         
         printf("TRAITEMENT\n");
         printf("FIN TRAITEMENT\n");
+        
+        Valretour = semop(semaphore_Proc_Acquisition_Traitement,sem_V,1);
+        if(Valretour < 0)
+        {
+            perror("Erreur rendre semaphore\n");
+            exit(-4);
+        }
+        
         Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_V,1);
         if(Valretour < 0)
         {
@@ -88,7 +108,6 @@ void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,st
         }
         printf("SEMAPHORE 3 REND\n\n");
         incrementeSerie++;
-        sleep(delaiEntreSerie+nbrAcquisition*delaiAcquisition+3);
     }
 
     DessinerGraphe(nbrSerie);
