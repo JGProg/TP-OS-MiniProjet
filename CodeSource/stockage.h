@@ -23,6 +23,6 @@
  * \pre 
  * \post Le tableau est copié dans un fichier txt. sous la fome data_1_X.txt ou X est le numéro de la série.
  */
-void stockage(int nbrAcquisition, int delaiEntreSerie, unsigned int nbrSerie,int semaphore_Proc_Acquisition_Stockage,int semaphore_Proc_Stockage_Traitement, struct sembuf *sem_P,struct sembuf *sem_V, int mem_ID_Proc_Stockage,int* ptr_mem_partagee);
+void stockage(int nbrAcquisition, int delaiEntreSerie, unsigned int nbrSerie,int MUTEX, struct sembuf *sem_P,struct sembuf *sem_V, int mem_ID_Proc_Stockage,int* ptr_mem_partagee, int sempahore_Proc_Acquisition_Stockage_Mem_plein, int sempahore_Proc_Acquisition_Stockage_Mem_vide,int sempahore_Proc_Stockage_Traitement_Mem_plein, int sempahore_Proc_Stockage_Traitement_Mem_vide);
 
 #endif

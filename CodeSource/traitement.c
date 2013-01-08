@@ -12,7 +12,7 @@
 /**
  * \brief see Header
  */
-void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,struct sembuf *sem_P,struct sembuf *sem_V, unsigned int delaiEntreSerie, unsigned int delaiAcquisition, unsigned int nbrAcquisition, int semaphore_Proc_Acquisition_Traitement)
+void traitement(unsigned int nbrSerie, int MUTEX,struct sembuf *sem_P,struct sembuf *sem_V, unsigned int delaiEntreSerie, unsigned int delaiAcquisition, unsigned int nbrAcquisition, int semaphore_Proc_Acquisition_Traitement, int sempahore_Proc_Stockage_Traitement_Mem_vide, int sempahore_Proc_Stockage_Traitement_Mem_plein)
 {
     char NomFichierData1[FILENAME_MAX] = "data_1_";
     char NomFichierData2[FILENAME_MAX] = "data_2_";
@@ -28,25 +28,21 @@ void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,st
     
     while(incrementeSerie < nbrSerie)
     {
-        
-        Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_P,1);
+        /* On prends le sémaphore de la mémoire pleine entre les processus stockage et traitement */
+    	Valretour = semop(sempahore_Proc_Stockage_Traitement_Mem_plein,sem_P,1);
         if(Valretour < 0)
         {
             perror("Erreur prendre semaphore\n");
             exit(-3);
         }
-
         printf("ATTENTE SEMAPHORE TRAITEMENT\n");
-        Valretour = semop(semaphore_Proc_Acquisition_Traitement,sem_P,1);
+        Valretour = semop(MUTEX,sem_P,1);
         if(Valretour < 0)
         {
             perror("Erreur prendre semaphore\n");
             exit(-3);
         }
-
-                
         
-               
         printf("TROISIEME SEMAPHORE\n");
         
         sprintf(NomFichierData1,"Data_1_/data_1_%d.txt",incrementeSerie+1);
@@ -56,14 +52,14 @@ void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,st
         Fichier_Data_1_ = fopen(NomFichierData1,"r");
         if(Fichier_Data_1_ == NULL)
         {
-            printf("Probleme Ouverture du fichier\n");
+            printf("Probleme Ouverture du fichier 1 \n");
             exit(3);
         }
         
         Fichier_Data_2_ = fopen(NomFichierData2,"w+");
         if(Fichier_Data_2_ == NULL)
         {
-            printf("Probleme Ouverture du fichier\n");
+            printf("Probleme Ouverture du fichier 2 \n");
             exit(3);
         }
         
@@ -93,14 +89,8 @@ void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,st
         printf("TRAITEMENT\n");
         printf("FIN TRAITEMENT\n");
         
-        Valretour = semop(semaphore_Proc_Acquisition_Traitement,sem_V,1);
-        if(Valretour < 0)
-        {
-            perror("Erreur rendre semaphore\n");
-            exit(-4);
-        }
         
-        Valretour = semop(semaphore_Proc_Stockage_Traitement,sem_V,1);
+        Valretour = semop(MUTEX,sem_V,1);
         if(Valretour < 0)
         {
             perror("Erreur rendre semaphore\n");
@@ -108,8 +98,14 @@ void traitement(unsigned int nbrSerie, int semaphore_Proc_Stockage_Traitement,st
         }
         printf("SEMAPHORE 3 REND\n\n");
         incrementeSerie++;
+        /* On libère le sémaphore de la mémoire vide entre les processus stockage et traitement */
+        Valretour = semop(sempahore_Proc_Stockage_Traitement_Mem_vide,sem_V,1);
+        if(Valretour < 0)
+		{
+			perror("Erreur rendre semaphore\n");
+			exit(-4);
+		}
     }
-
     DessinerGraphe(nbrSerie);
     
     /* printf("_________\n Fin du traitement \n\n"); */
@@ -130,8 +126,8 @@ void DessinerGraphe(int nbrSerie)
     }
     sprintf(NomFile,"\"data_2_/data_2_%d.txt\" with lines\r\n ",nbrSerie);
     strcat(FinFichier,NomFile);
-
-
+    
+    
     f = popen("gnuplot","w");
     fprintf(f,"set xlabel \"Comparaison\r\n");
     fprintf(f,"set ylabel \"Numero Acquisition \r\n");
@@ -139,17 +135,17 @@ void DessinerGraphe(int nbrSerie)
     fprintf(f,"%s",FinFichier);
     
     fflush(f);
-    sleep(100);
+    sleep(1);
     
     pclose(f);
-
+    
 }
 
 /*
-int main(void)
-{
-    DessinerGraphe(2);
-    return 0;
-}
+ int main(void)
+ {
+ DessinerGraphe(2);
+ return 0;
+ }
  */
- 
+

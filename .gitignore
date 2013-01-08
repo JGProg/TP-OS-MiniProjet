@@ -7,7 +7,7 @@ CodeSource/doc/*
 CodeSource/Data_2_/*
 CodeSource/Data_1_/*
 gnuplot-4.6.1/*
-
+check/
 # Object files
 *.o
 
