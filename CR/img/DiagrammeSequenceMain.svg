@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="492.804px" height="523.833px" viewBox="0 0 492.804 523.833" enable-background="new 0 0 492.804 523.833"
+	 xml:space="preserve">
+<rect x="162.804" y="178.688" fill-opacity="0.1" width="17.5" height="180.833"/>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="29.472" y1="51.522" x2="29.472" y2="489.578"/>
+<text transform="matrix(1 0 0 1 4.896 17.355)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="12">Processus</tspan><tspan x="10.884" y="14.4" font-family="'MyriadPro-Regular'" font-size="12">:Main</tspan></text>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="171.972" y1="157.521" x2="171.972" y2="370.521"/>
+<text transform="matrix(1 0 0 1 147.396 17.355)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="12">Processus</tspan><tspan x="-4.908" y="14.4" font-family="'MyriadPro-Regular'" font-size="12">:Acquisition</tspan></text>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="315.972" y1="218.52" x2="315.972" y2="388.854"/>
+<text transform="matrix(1 0 0 1 291.396 17.355)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="12">Processus</tspan><tspan x="0.342" y="14.4" font-family="'MyriadPro-Regular'" font-size="12">:Stockage</tspan></text>
+<text transform="matrix(1 0 0 1 435.7285 17.355)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="12">Processus</tspan><tspan x="-4.225" y="14.4" font-family="'MyriadPro-Regular'" font-size="12">:Traitement</tspan></text>
+<rect x="18.638" y="64.521" fill-opacity="0.1" width="21.667" height="63.333"/>
+<text transform="matrix(1 0 0 1 47.252 100.1875)" font-family="'MyriadPro-Regular'" font-size="12">Initialisation</text>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="29.471" y1="178.688" x2="163.819" y2="178.688"/>
+		<g>
+			<path d="M162.024,178.688l-2.191-3.603l0.123-0.082l5.875,2.333c2.047,0.45,4.094,0.9,6.141,1.351
+				c-2.047,0.45-4.094,0.9-6.141,1.351l-5.875,2.333l-0.123-0.062L162.024,178.688z"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 71.9883 172.1875)" font-family="'MyriadPro-Regular'" font-size="12">Acquisition()</text>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="29.471" y1="157.521" x2="163.819" y2="157.521"/>
+		<g>
+			<path d="M162.024,157.521l-2.191-3.603l0.123-0.082l5.875,2.333c2.047,0.45,4.094,0.9,6.141,1.351
+				c-2.047,0.45-4.094,0.9-6.141,1.351l-5.875,2.333l-0.123-0.062L162.024,157.521z"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 52.8066 152.6875)" font-family="'MyriadPro-Regular'" font-size="12">Création processus()</text>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="28.304" y1="241.188" x2="306.652" y2="241.188"/>
+		<g>
+			<path d="M304.857,241.188l-2.191-3.603l0.123-0.082l5.875,2.333c2.047,0.45,4.094,0.9,6.141,1.351
+				c-2.047,0.45-4.094,0.9-6.141,1.351l-5.875,2.333l-0.123-0.062L304.857,241.188z"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 74.3213 234.6875)" font-family="'MyriadPro-Regular'" font-size="12">Stockage()</text>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="29.471" y1="217.021" x2="307.819" y2="217.021"/>
+		<g>
+			<path d="M306.024,217.021l-2.191-3.603l0.123-0.082l5.875,2.333c2.047,0.45,4.094,0.9,6.141,1.351
+				c-2.047,0.45-4.094,0.9-6.141,1.351l-5.875,2.333l-0.123-0.062L306.024,217.021z"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 49.8901 212.1875)" font-family="'MyriadPro-Regular'" font-size="12">Création processus()</text>
+<rect x="306.222" y="240.187" fill-opacity="0.1" width="17.5" height="137.667"/>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="29.471" y1="308.52" x2="452.151" y2="308.52"/>
+		<g>
+			<path d="M450.356,308.52l-2.191-3.603l0.123-0.082l5.875,2.333c2.047,0.45,4.094,0.9,6.141,1.351
+				c-2.047,0.45-4.094,0.9-6.141,1.351l-5.875,2.333l-0.123-0.062L450.356,308.52z"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 72.6719 302.02)" font-family="'MyriadPro-Regular'" font-size="12">Traitement()</text>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="29.471" y1="287.353" x2="452.151" y2="287.353"/>
+		<g>
+			<path d="M450.356,287.353l-2.191-3.603l0.123-0.082l5.875,2.333c2.047,0.45,4.094,0.9,6.141,1.351
+				c-2.047,0.45-4.094,0.9-6.141,1.351l-5.875,2.333l-0.123-0.062L450.356,287.353z"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 52.8066 282.52)" font-family="'MyriadPro-Regular'" font-size="12">Création processus()</text>
+<rect x="451.554" y="308.521" fill-opacity="0.1" width="17.5" height="84.333"/>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="460.304" y1="287.353" x2="460.304" y2="403.687"/>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="171.554" y1="370.521" x2="37.623" y2="370.521"/>
+		<g>
+			<path d="M39.418,370.521l2.191,3.604l-0.123,0.081l-5.875-2.333c-2.047-0.451-4.094-0.9-6.141-1.352
+				c2.047-0.45,4.094-0.9,6.141-1.352l5.875-2.333l0.123,0.062L39.418,370.521z"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="314.972" y1="388.854" x2="37.623" y2="388.854"/>
+		<g>
+			<path d="M39.418,388.854l2.191,3.603l-0.123,0.082l-5.875-2.334c-2.047-0.449-4.094-0.9-6.141-1.351
+				c2.047-0.45,4.094-0.9,6.141-1.351l5.875-2.334l0.123,0.062L39.418,388.854z"/>
+		</g>
+	</g>
+</g>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="460.304" y1="403.854" x2="36.456" y2="403.854"/>
+		<g>
+			<path d="M38.251,403.854l2.191,3.603l-0.123,0.082l-5.875-2.334c-2.047-0.449-4.094-0.9-6.141-1.351
+				c2.047-0.45,4.094-0.9,6.141-1.351l5.875-2.334l0.123,0.062L38.251,403.854z"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 66.9956 361.687)" font-family="'MyriadPro-Regular'" font-size="12">Fin processus</text>
+<text transform="matrix(1 0 0 1 211.1616 377.3535)" font-family="'MyriadPro-Regular'" font-size="12">Fin processus</text>
+<text transform="matrix(1 0 0 1 354.9951 395.52)" font-family="'MyriadPro-Regular'" font-size="12">Fin processus</text>
+<rect x="18.638" y="323.688" fill-opacity="0.1" width="21.667" height="92.5"/>
+<text transform="matrix(1 0 0 1 51.3042 340.6875)" font-family="'MyriadPro-Regular'" font-size="12">Attente fin processus</text>
+<g>
+	<g>
+		<path d="M46.792,338.168c0,0-0.003,0.143-0.008,0.41c0.003,0.268-0.033,0.66-0.109,1.157c-0.169,0.976-0.595,2.42-1.772,3.733
+			c-0.583,0.648-1.357,1.245-2.305,1.624c-0.956,0.367-2.053,0.483-3.171,0.264c-1.097-0.247-2.176-0.808-3.011-1.652
+			c-0.854-0.826-1.494-1.885-1.87-3.031c-0.201-0.57-0.311-1.167-0.39-1.764c-0.015-0.306-0.054-0.587-0.046-0.913
+			c0.009-0.286-0.002-0.553,0.042-0.871c0.125-1.216,0.474-2.359,1.073-3.361c0.591-0.995,1.381-1.857,2.315-2.434
+			c0.927-0.584,1.968-0.899,2.941-0.951l0.182-0.014c0.159-0.002,0.135,0.003,0.211,0.004l0.311,0.013
+			c0.189-0.002,0.429,0.033,0.669,0.077c0.486,0.067,0.864,0.212,1.245,0.345c0.74,0.298,1.319,0.689,1.759,1.045
+			c0.432,0.364,0.747,0.682,0.933,0.918c0.194,0.232,0.298,0.355,0.298,0.355l-1.432,1.035c0,0-0.076-0.099-0.217-0.284
+			c-0.134-0.192-0.365-0.444-0.68-0.739c-0.321-0.288-0.744-0.604-1.285-0.854c-0.269-0.107-0.584-0.242-0.872-0.292
+			c-0.218-0.083-0.814-0.123-1.068-0.121c-0.736,0.004-1.537,0.199-2.294,0.624c-0.761,0.417-1.446,1.091-1.987,1.905
+			c-0.547,0.809-0.902,1.818-1.058,2.827c-0.051,0.238-0.057,0.537-0.079,0.815c-0.02,0.24,0.003,0.525,0.002,0.787
+			c0.046,0.532,0.116,1.069,0.271,1.584c0.285,1.039,0.812,2.014,1.539,2.79c0.71,0.794,1.649,1.337,2.623,1.609
+			c0.974,0.243,2.017,0.194,2.905-0.104c0.895-0.309,1.656-0.834,2.245-1.428c1.191-1.203,1.686-2.6,1.899-3.558
+			c0.099-0.486,0.154-0.875,0.164-1.143C46.782,338.311,46.792,338.168,46.792,338.168z"/>
+		<g>
+			<polygon points="41.715,333.981 46.791,338.168 47.88,331.678 			"/>
+		</g>
+	</g>
+</g>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="25.565" y1="485.323" x2="33.378" y2="493.833"/>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="25.565" y1="493.833" x2="33.378" y2="485.323"/>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="167.648" y1="366.615" x2="175.46" y2="374.427"/>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="167.648" y1="374.427" x2="175.46" y2="366.615"/>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="312.065" y1="384.948" x2="319.878" y2="392.76"/>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="312.065" y1="392.76" x2="319.878" y2="384.948"/>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="456.397" y1="399.948" x2="464.21" y2="407.76"/>
+<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="456.397" y1="407.76" x2="464.21" y2="399.948"/>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="171.972" y1="157.521" x2="171.972" y2="156.021"/>
+		
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="2.9428,2.9428" x1="171.972" y1="153.078" x2="171.972" y2="54.493"/>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="171.972" y1="53.022" x2="171.972" y2="51.522"/>
+	</g>
+</g>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="315.972" y1="217.021" x2="315.972" y2="215.521"/>
+		
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="2.9545,2.9545" x1="315.972" y1="212.566" x2="315.972" y2="54.499"/>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="315.972" y1="53.022" x2="315.972" y2="51.522"/>
+	</g>
+</g>
+<g>
+	<g>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="460.304" y1="287.353" x2="460.304" y2="285.853"/>
+		
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="3.0238,3.0238" x1="460.304" y1="282.829" x2="460.304" y2="54.534"/>
+		<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="460.304" y1="53.022" x2="460.304" y2="51.522"/>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 46.7915 456.499)" font-family="'MyriadPro-Regular'" font-size="12">Destruction (sémaphore + mémoire partagée)</text>
+<rect x="18.638" y="431.334" fill-opacity="0.1" width="21.667" height="36.832"/>
+</svg>
