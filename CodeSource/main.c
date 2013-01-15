@@ -148,11 +148,11 @@ int main(int argc, char *argv[])
      */
     sem_P[0].sem_num =  0; /* Numéro de notre sémaphore: le premier et le seul */
     sem_P[0].sem_op  = -1; /* Pour un P() on décrémente */
-    sem_P[0].sem_flg =  0;
+    sem_P[0].sem_flg =  SEM_UNDO;
     
     sem_V[0].sem_num = 0;
     sem_V[0].sem_op  = 1;
-    sem_V[0].sem_flg = 0;
+    sem_V[0].sem_flg = SEM_UNDO;
     
     
     key = 42;
