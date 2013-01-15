@@ -48,8 +48,7 @@
 
 
 int main(int argc, char *argv[])
-{
-    
+{    
     
 /***************************** DECLARATIONS DES VARIABLES + INITIALISATION *****************************/
     
@@ -76,15 +75,12 @@ int main(int argc, char *argv[])
     
     /* --------------- DECLARATIONS + INITIALISATIONS DES SEMAPHORES ------------*/
     
-    int MUTEX;
-    int sempahore_Proc_Acquisition_Stockage_Mem_plein;
-    int sempahore_Proc_Acquisition_Stockage_Mem_vide;
-    int semaphore_Proc_Stockage_Traitement;
-    int sempahore_Proc_Stockage_Traitement_Mem_plein;
-    int sempahore_Proc_Stockage_Traitement_Mem_vide;
-    
-    /* Semaphore à enlever */
-    int semaphore_Proc_Acquisition_Traitement;
+    int MUTEX_acquisition_stockage;
+    int MUTEX_stockage_traitement;
+    int semaphore_Proc_Acquisition_Stockage_Mem_plein;
+    int semaphore_Proc_Acquisition_Stockage_Mem_vide;
+    int semaphore_Proc_Stockage_Traitement_fichier_plein;
+    int semaphore_Proc_Stockage_Traitement_fichier_vide;
     
     struct sembuf *sem_P = (struct sembuf *) malloc(2*sizeof(struct sembuf));
     struct sembuf *sem_V = (struct sembuf *) malloc(2*sizeof(struct sembuf));
@@ -159,60 +155,51 @@ int main(int argc, char *argv[])
     sem_V[0].sem_flg = 0;
     
     
-    key = 666;
     key = 42;
     
     /* Creation du sémaphore entre le processus Acquisition et Stockage */
-    MUTEX = semget(345 ,1,IPC_CREAT | 0666);
-    if(MUTEX < 0)
+    MUTEX_acquisition_stockage = semget(345 ,1,IPC_CREAT | 0666);
+    if(MUTEX_acquisition_stockage < 0)
     {
         perror("Probleme de creation de sémaphore\n");
         exit(-2);
     }
     
-    /* Creation du sémaphore entre le processus Stockage et Traitement */
-    semaphore_Proc_Stockage_Traitement = semget(42 ,1,IPC_CREAT | 0666);
-    if(semaphore_Proc_Stockage_Traitement < 0)
-    {
-        perror("Probleme de creation de sémaphore\n");
-        exit(-2);
-    }
-    
-    /* Creation du sémaphore entre le processus Stockage et Traitement */
-    semaphore_Proc_Acquisition_Traitement = semget(43 ,1,IPC_CREAT | 0666);
-    if(semaphore_Proc_Acquisition_Traitement < 0)
+    /* Creation du sémaphore entre le processus Stockage et Traitement*/
+    MUTEX_stockage_traitement = semget(346 ,1,IPC_CREAT | 0666);
+    if(MUTEX_stockage_traitement < 0)
     {
         perror("Probleme de creation de sémaphore\n");
         exit(-2);
     }
     
     /* Creation du sémaphore entre le processus Acquisition et Stockage pour mémoire pleine */
-    sempahore_Proc_Acquisition_Stockage_Mem_plein = semget(44 ,1,IPC_CREAT | 0666);
-    if(sempahore_Proc_Acquisition_Stockage_Mem_plein < 0)
+    semaphore_Proc_Acquisition_Stockage_Mem_plein = semget(44 ,1,IPC_CREAT | 0666);
+    if(semaphore_Proc_Acquisition_Stockage_Mem_plein < 0)
     {
         perror("Probleme de creation de sémaphore\n");
         exit(-2);
     }
     
     /* Creation du sémaphore entre le processus Acquisition et Stockage pour mémoire vide */
-    sempahore_Proc_Acquisition_Stockage_Mem_vide = semget(45 ,1,IPC_CREAT | 0666);
-    if(sempahore_Proc_Acquisition_Stockage_Mem_vide < 0)
+    semaphore_Proc_Acquisition_Stockage_Mem_vide = semget(45 ,1,IPC_CREAT | 0666);
+    if(semaphore_Proc_Acquisition_Stockage_Mem_vide < 0)
     {
         perror("Probleme de creation de sémaphore\n");
         exit(-2);
     }
     
     /* Creation du sémaphore entre le processus Acquisition et Stockage pour mémoire vide */
-    sempahore_Proc_Stockage_Traitement_Mem_plein = semget(46 ,1,IPC_CREAT | 0666);
-    if(sempahore_Proc_Stockage_Traitement_Mem_plein < 0)
+    semaphore_Proc_Stockage_Traitement_fichier_plein = semget(46 ,1,IPC_CREAT | 0666);
+    if(semaphore_Proc_Stockage_Traitement_fichier_plein < 0)
     {
         perror("Probleme de creation de sémaphore\n");
         exit(-2);
     }
     
     /* Creation du sémaphore entre le processus Acquisition et Stockage pour mémoire vide */
-    sempahore_Proc_Stockage_Traitement_Mem_vide = semget(47 ,1,IPC_CREAT | 0666);
-    if(sempahore_Proc_Stockage_Traitement_Mem_vide < 0)
+    semaphore_Proc_Stockage_Traitement_fichier_vide = semget(47 ,1,IPC_CREAT | 0666);
+    if(semaphore_Proc_Stockage_Traitement_fichier_vide < 0)
     {
         perror("Probleme de creation de sémaphore\n");
         exit(-2);
@@ -220,19 +207,14 @@ int main(int argc, char *argv[])
     
     /* Changement d'état des sémaphores */
     argument.val = 1;
-    semctl(MUTEX,0,SETVAL,argument);
-    argument.val = 2;
-    semctl(semaphore_Proc_Stockage_Traitement,0,SETVAL,argument);
-    argument.val = 3;
-    semctl(semaphore_Proc_Acquisition_Traitement,0,SETVAL,argument);
-    argument.val = 4;
-    semctl(sempahore_Proc_Acquisition_Stockage_Mem_plein,0,SETVAL,argument);
-    argument.val = 5;
-    semctl(sempahore_Proc_Acquisition_Stockage_Mem_vide,0,SETVAL,argument);
-    argument.val = 6;
-    semctl(sempahore_Proc_Stockage_Traitement_Mem_plein,0,SETVAL,argument);
-    argument.val = 7;
-    semctl(sempahore_Proc_Stockage_Traitement_Mem_vide,0,SETVAL,argument);
+    semctl(MUTEX_acquisition_stockage,0,SETVAL,argument);
+    argument.val = 1;
+    semctl(MUTEX_stockage_traitement,0,SETVAL,argument);
+    semctl(semaphore_Proc_Acquisition_Stockage_Mem_vide,0,SETVAL,argument);
+    semctl(semaphore_Proc_Stockage_Traitement_fichier_vide,0,SETVAL,argument);
+    argument.val = 0;
+    semctl(semaphore_Proc_Acquisition_Stockage_Mem_plein,0,SETVAL,argument);
+    semctl(semaphore_Proc_Stockage_Traitement_fichier_plein,0,SETVAL,argument);
         
     /****************************************** FIN INITIALISATION *********************************************/
 	
@@ -260,7 +242,7 @@ int main(int argc, char *argv[])
     
    	/*********************************** Création du processus acquisition ***********************************/
     
-	pid_acquisition = fork();
+ 	if ((pid_acquisition = fork()) != 0) printf(" \n\t PID Processus acquisition = [%d]\n\n",pid_acquisition);
 	switch(pid_acquisition)
 	{
             
@@ -272,7 +254,7 @@ int main(int argc, char *argv[])
             
             	/* Code du la fonction acquisition.c */
 		case 0:
-                acquisition(nbrAcquisition,delaiEntreSerie, nbrSerie, delaiAcquisition,ptr_mem_partagee, MUTEX,sem_P,sem_V,mem_ID_Proc_Acquisition,sempahore_Proc_Acquisition_Stockage_Mem_plein,sempahore_Proc_Acquisition_Stockage_Mem_vide);
+                acquisition(nbrAcquisition,delaiEntreSerie, nbrSerie, delaiAcquisition,ptr_mem_partagee,sem_P,sem_V,mem_ID_Proc_Acquisition, MUTEX_acquisition_stockage,semaphore_Proc_Acquisition_Stockage_Mem_plein,semaphore_Proc_Acquisition_Stockage_Mem_vide);
                                 
 		exit(1);
             	break;
@@ -288,8 +270,7 @@ int main(int argc, char *argv[])
 	
 	
 	/*********************************** Création du processus stockage ***********************************/
- 	pid_stockage = fork();
- 	
+ 	if ((pid_stockage = fork()) != 0) printf(" \n\tPID Processus stockage = [%d]\n\n",pid_stockage);
 	switch(pid_stockage)
 	{
             /* Gestion des erreurs du fork */
@@ -300,7 +281,7 @@ int main(int argc, char *argv[])
             
             /* Code de la fonction stockage */
 		case 0:
-            stockage( nbrAcquisition, delaiEntreSerie, nbrSerie, MUTEX, sem_P,sem_V,  mem_ID_Proc_Stockage, ptr_mem_partagee, sempahore_Proc_Acquisition_Stockage_Mem_plein, sempahore_Proc_Acquisition_Stockage_Mem_vide,sempahore_Proc_Stockage_Traitement_Mem_plein,sempahore_Proc_Stockage_Traitement_Mem_vide);
+            stockage(nbrAcquisition, nbrSerie, sem_P,sem_V,  mem_ID_Proc_Stockage,ptr_mem_partagee, MUTEX_acquisition_stockage, MUTEX_stockage_traitement, semaphore_Proc_Acquisition_Stockage_Mem_plein, semaphore_Proc_Acquisition_Stockage_Mem_vide, semaphore_Proc_Stockage_Traitement_fichier_plein, semaphore_Proc_Stockage_Traitement_fichier_vide);
             
             exit(1);
             break;
@@ -314,8 +295,7 @@ int main(int argc, char *argv[])
     
     
 	/*********************************** Création du processus traitement ***********************************/
- 	pid_traitement = fork();
- 	
+ 	if ((pid_traitement = fork()) != 0) printf(" \n\tPID Processus traitement = [%d]\n\n",pid_traitement);
 	switch(pid_traitement)
 	{
             /* Gestion des erreurs du fork */
@@ -326,7 +306,7 @@ int main(int argc, char *argv[])
             
             /* Code de la fonction stockage.c */
 		case 0:
-           traitement(nbrSerie, MUTEX,sem_P,sem_V, delaiEntreSerie,delaiAcquisition,nbrAcquisition,semaphore_Proc_Acquisition_Traitement,sempahore_Proc_Stockage_Traitement_Mem_vide,sempahore_Proc_Stockage_Traitement_Mem_plein);
+           traitement(nbrSerie,sem_P,sem_V,  semaphore_Proc_Stockage_Traitement_fichier_plein, semaphore_Proc_Stockage_Traitement_fichier_vide, MUTEX_stockage_traitement);
             exit(1);
             break;
             
@@ -344,8 +324,14 @@ int main(int argc, char *argv[])
     {
         printf("Un fils est mort, paix à son âme\n");
     }
-    semctl(semaphore_Proc_Stockage_Traitement, 0, IPC_RMID, 0);
-    semctl(MUTEX, 0, IPC_RMID, 0);
+    
+    /* On supprime les sémaphores */
+    semctl(MUTEX_acquisition_stockage, 0, IPC_RMID, 0);
+    semctl(MUTEX_stockage_traitement, 0, IPC_RMID, 0);
+    semctl(semaphore_Proc_Acquisition_Stockage_Mem_plein, 0, IPC_RMID, 0);
+    semctl(semaphore_Proc_Acquisition_Stockage_Mem_vide, 0, IPC_RMID, 0);
+    semctl(semaphore_Proc_Stockage_Traitement_fichier_plein, 0, IPC_RMID, 0);
+    semctl(semaphore_Proc_Stockage_Traitement_fichier_vide, 0, IPC_RMID, 0);
     
     rtrn = shmctl(mem_ID_Proc_Acquisition, IPC_RMID, 0);
 	if(rtrn == -1)

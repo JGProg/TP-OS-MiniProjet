@@ -10,12 +10,10 @@
 #include <stdio.h>
 #include "acquisition.h"
 
-
-
 /**
- * \brief see Header
+* \brief see Header
 */
-void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, unsigned int nbSerie, unsigned int delaiEntreDeuxAcquisition,int* ptr_mem_partagee, int MUTEX,struct sembuf *sem_P,struct sembuf *sem_V, int mem_ID_Proc_Acquisition, int sempahore_Proc_Acquisition_Stockage_Mem_plein, int sempahore_Proc_Acquisition_Stockage_Mem_vide)
+void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, unsigned int nbSerie, unsigned int delaiEntreDeuxAcquisition,int* ptr_mem_partagee,struct sembuf *sem_P,struct sembuf *sem_V, int mem_ID_Proc_Acquisition, int MUTEX_acquisition_stockage, int semaphore_Proc_Acquisition_Stockage_Mem_plein, int semaphore_Proc_Acquisition_Stockage_Mem_vide)
 {
 	
 	/* Déclaration des variables */
@@ -28,7 +26,9 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
 	{
 
 		/* On prends le sémaphore de la mémoire Vide */
-		Valretour = semop(sempahore_Proc_Acquisition_Stockage_Mem_vide,sem_P,1);
+        Valretour = semop(semaphore_Proc_Acquisition_Stockage_Mem_vide,sem_P,1);
+		if (Valretour > 0) printf(" Attente Semaphore Acquisition <-> Stockage mémoire vide\n");
+		printf(" ACQUISITION : semaphore Acquisition<->Stockage mémoire vide pris \n\n");
 		if(Valretour < 0)
 		{
 			perror("Erreur prendre semaphore\n");
@@ -37,18 +37,21 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
 		
 		
 		/* On prends le sémaphore entre les processus Acquisition et Stockage */
-		Valretour = semop(MUTEX,sem_P,1);
+        Valretour = semop(MUTEX_acquisition_stockage,sem_P,1);
+		if (Valretour > 0) printf(" Attente MUTEX Acquisition<->Stockage \n");
+		printf(" ACQUISITION : MUTEX Acquisition<->Stockage pris ");
 		if(Valretour < 0)
 		{
 			perror("Erreur prendre semaphore\n");
 			exit(-3);
 		}
 		
-		printf("\n Série d'échantillonage N° %d \n",incrementAcquisition);
+		printf("\n ---------- Série d'échantillonage N° %d -----------\n",incrementAcquisition);
 		
 		
 /* On attache le segment de mémoire partagée identifié par mem_ID au segment de données du processus 'Acquisition' dans une zone libre déterminée par le Système d'exploitation et on s'assure que le segment de mémoire a été correctement attaché à mon processus */
-		if ((ptr_mem_partagee = shmat(mem_ID_Proc_Acquisition, NULL, 0)) == (void*) -1)
+        ptr_mem_partagee = shmat(mem_ID_Proc_Acquisition, NULL, 0);
+		if (ptr_mem_partagee == (void*) -1)
 		{
 			perror("shmat");
 			exit(1);
@@ -69,10 +72,11 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
 
 		/* On libère la mémoire partagée */
 		shmdt(ptr_mem_partagee);
-		printf("FIN DE LA SERIE D'ACQUISITION \n ");
+		printf("------ FIN DE LA SERIE D'ACQUISITION -------\n ");
 		
 		/* On donne la main au processus stockage.c */
-		Valretour = semop(MUTEX,sem_V,1);
+		Valretour = semop(MUTEX_acquisition_stockage,sem_V,1);
+		printf(" ACQUISITION : MUTEX Acquisition<->Stockage libre \n");
 		if(Valretour < 0)
 		{
 			perror("Erreur rendre semaphore\n");
@@ -80,7 +84,8 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
 		}
 		
 		/* On libère le sémaphore de la mémoire pleine */
-		Valretour = semop(sempahore_Proc_Acquisition_Stockage_Mem_plein,sem_V,1);
+		Valretour = semop(semaphore_Proc_Acquisition_Stockage_Mem_plein,sem_V,1);
+		printf(" ACQUISITION : semaphore Acquisition<->Stockage mémoire pleine libre \n");
 		if(Valretour < 0)
 		{
 			perror("Erreur rendre semaphore\n");
@@ -89,6 +94,7 @@ void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, un
 		incrementAcquisition++;
 		sleep(delaiEntreLesSeries);
 	}
+	printf(" PID Processus acquisition = [%d] TERMINEE \n",getpid());
 }
 
 
