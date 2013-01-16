@@ -23,7 +23,6 @@
 #include <sys/sem.h>
 
 /**
-* \pre 'nbAcquisition' : Le nombre de séries d'acquisition, il ne peut pas être négatif, 'delaiEntreLesSeries' : le délai entre les séries en secondes, 'nbrAcquisition' : Le nombre d'acquisition >= 0, 'intervalleEntreDeuxAcquisition' : Représente l'intervalle entre deux acquisitions,  tabResultat[] : un pointeur vers un tableau initialisé.
 * \post Le tableau 'tabResultat' est complété selon les valeurs des paramètres de la fonction.
 */
 void acquisition(unsigned int nbAcquisition,unsigned int delaiEntreLesSeries, unsigned int nbSerie, unsigned int delaiEntreDeuxAcquisition,int* ptr_mem_partagee,struct sembuf *sem_P,struct sembuf *sem_V, int mem_ID_Proc_Acquisition, int MUTEX_acquisition_stockage, int semaphore_Proc_Acquisition_Stockage_Mem_plein, int semaphore_Proc_Acquisition_Stockage_Mem_vide);

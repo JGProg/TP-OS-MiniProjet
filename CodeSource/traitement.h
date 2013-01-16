@@ -23,7 +23,6 @@
 #include <string.h>
 
 /**
- * \pre
  * \post Comparaison des valeurs depuis le fichier généré par le processus stockage.
  */
 void traitement(unsigned int nbrSerie,struct sembuf *sem_P,struct sembuf *sem_V, int semaphore_Proc_Stockage_Traitement_fichier_plein, int semaphore_Proc_Stockage_Traitement_fichier_vide, int MUTEX_stockage_traitement);

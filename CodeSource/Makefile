@@ -19,10 +19,10 @@
 CC = gcc
 DEBUG=yes
 ifeq ($(DEBUG),yes)
-	CFLAGS= -W -Wall -pedantic -g -O2
+	CFLAGS= -W -Wall -g -O2
 	LDFLAGS=
 else
-	CFLAGS=-W -Wall -ansi -pedantic
+	CFLAGS=-W -Wall
 	LDFLAGS=
 endif
  
